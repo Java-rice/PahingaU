@@ -9,8 +9,11 @@ import Register from './pages/register/Register';
 import StudentRegister from './pages/register/StudentRegister';
 import LandlordRegister from './pages/register/LandlordRegister';
 import Login from './pages/login/Login';  
-import TransitionWrapper from './components/transition/TransitionWrapper';
-import './App.css';
+import TermsOfService from "./pages/termsofservice/Termsofservice";
+import PrivacyPolicy from "./pages/privacypolicy/Privacypolicy";
+import CookiePolicy from "./pages/cookiepolicy/Cookiepolicy";
+import TransitionWrapper from "./components/transition/TransitionWrapper";
+import "./App.css";
 
 const App = () => {
   return (
@@ -25,6 +28,9 @@ const App = () => {
           <Route path="/Register" element={<Register />} />
           <Route path="/student-register" element={<StudentRegister />} />
           <Route path="/landlord-register" element={<LandlordRegister />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/CookiePolicy" element={<CookiePolicy />} />
         </Routes>
       </TransitionWrapper>
       <Footer />
