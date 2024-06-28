@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { Button } from "../buttons/Button";
 import "./Header.css";
 
+
 const Header = () => {
   const [clicked, setClicked] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenu, setIsMobileMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Example state for login status
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,11 +99,20 @@ const Header = () => {
               </li>
               <li className="text-base font-bold font-sans cursor-pointer">
                 <NavLink
-                  to="/FindDorms"
+                  to={isLoggedIn ? "/FindDorms" : "/Login"}
                   activeClassName="text-[#0077B5]"
                   className="hover:text-[#0077B5] transition duration-300 ease-in-out"
                 >
                   Find Dorms
+                </NavLink>
+              </li>
+              <li className="text-base font-bold font-sans cursor-pointer">
+                <NavLink
+                  to={isLoggedIn ? "/PostProperty" : "/Login"}
+                  activeClassName="text-[#0077B5]"
+                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                >
+                  Post My Property
                 </NavLink>
               </li>
               <li className="text-base font-bold font-sans cursor-pointer">
@@ -111,15 +122,6 @@ const Header = () => {
                   className="hover:text-[#0077B5] transition duration-300 ease-in-out"
                 >
                   How It Works
-                </NavLink>
-              </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <NavLink
-                  to="/PostProperty"
-                  activeClassName="text-[#0077B5]"
-                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                >
-                  Post My Property
                 </NavLink>
               </li>
               <li className="text-base font-bold font-sans cursor-pointer">
@@ -164,11 +166,20 @@ const Header = () => {
                 </li>
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
-                    to="/FindDorms"
+                    to={isLoggedIn ? "/FindDorms" : "/Login"}
                     activeClassName="text-[#0077B5]"
                     className="hover:text-[#0077B5] transition duration-300 ease-in-out"
                   >
                     Find Dorms
+                  </NavLink>
+                </li>
+                <li className="text-base font-bold font-sans cursor-pointer">
+                  <NavLink
+                    to={isLoggedIn ? "/PostProperty" : "/Login"}
+                    activeClassName="text-[#0077B5]"
+                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                  >
+                    Post My Property
                   </NavLink>
                 </li>
                 <li className="text-base font-bold font-sans cursor-pointer">
@@ -178,15 +189,6 @@ const Header = () => {
                     className="hover:text-[#0077B5] transition duration-300 ease-in-out"
                   >
                     How It Works
-                  </NavLink>
-                </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    to="/PostProperty"
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  >
-                    Post My Property
                   </NavLink>
                 </li>
                 <li className="text-base font-bold font-sans cursor-pointer">
