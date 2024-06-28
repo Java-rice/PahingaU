@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import { Link } from "react-router-dom";
 
 const buttonVariants = cva(
-  "inline-flex font-poppins items-center justify-center rounded-md text-sm font-medium",
+  "inline-flex font-poppins items-center justify-center text-sm font-medium",
   {
     variants: {
       variant: {
@@ -15,6 +15,10 @@ const buttonVariants = cva(
           "bg-transparent rounded-full text-white border border-white",
         dark:
           "bg-[#0077B5] text-white font-semibold px-4 py-1 rounded-full hover:bg-[#005582] transition duration-100",
+        darklarge:
+          "bg-[#005582] text-white font-semibold px-8 m-auto py-2 rounded-full hover:bg-[#032C41] transition duration-300",
+        black:
+          "bg-[#1A1A1A] text-white text-base font-medium px-12  m-auto  py-2 rounded-full hover:bg-[#0077B5] transition duration-300",
         clear:
           "rounded-full px-4 py-1 text-[#0077B5] bg-transparent font-semibold hover:text-white hover:bg-[#0077B5] text-base leading-tight text-left transition duration-100",
       },
