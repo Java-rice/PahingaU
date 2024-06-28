@@ -65,14 +65,20 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/PrivacyPolicy"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/CookiePolicy"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   Cookie Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
