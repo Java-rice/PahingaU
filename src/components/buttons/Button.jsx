@@ -15,6 +15,8 @@ const buttonVariants = cva(
           "bg-transparent rounded-full text-white border border-white",
         dark:
           "bg-[#0077B5] text-white font-semibold px-4 py-1 rounded-full hover:bg-[#005582] transition duration-100",
+        soft:
+          "bg-[#0077B5] rounded-full text-white",
         darklarge:
           "bg-[#005582] text-white font-semibold px-8 m-auto py-2 rounded-full hover:bg-[#032C41] transition duration-300",
         black:
