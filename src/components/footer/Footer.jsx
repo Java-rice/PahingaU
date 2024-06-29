@@ -20,19 +20,29 @@ const Footer = () => {
             <h4 className="text-lg font-bold mb-4 text-[#0077B5]">RENTING</h4>
             <ul className="space-y-2">
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/Login"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   Browse Rentals
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/HowItWorks"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   How It Works
-                </a>
+                </Link>
               </li>
+
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/Login"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   Post My Property
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -42,14 +52,20 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/About"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-gray-700 hover:text-[#0077B5] cursor-pointer">
+                <Link
+                  to="/SafetyGuidelines"
+                  className="text-gray-700 hover:text-[#0077B5] cursor-pointer"
+                >
                   Safety Guidelines
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

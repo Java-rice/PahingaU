@@ -12,6 +12,9 @@ export default {
       animation: {
         'spin-slow': 'spin 8s linear infinite',
       },
+      colors: {
+        'custom-blue': '#0077B5',
+      }
     },
   },
   plugins: [],
