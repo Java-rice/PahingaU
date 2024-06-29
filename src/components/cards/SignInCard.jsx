@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SignInCard = () => {
   return (
@@ -12,9 +13,11 @@ const SignInCard = () => {
           send to agents.
         </p>
       </div>
-      <button className="bg-white text-[#0077B5] font-medium py-3 px-6 rounded-md hover:bg-gray-200 transition-colors">
-        Login or register an account
-      </button>
+      <Link to="/Register">
+        <button className="bg-white text-[#0077B5] font-medium py-3 px-6 rounded-md hover:bg-gray-200 transition-colors">
+          Login or register an account
+        </button>
+      </Link>
     </div>
   );
 };
