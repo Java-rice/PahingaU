@@ -1,20 +1,21 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/header/Header';
-import How from './pages/howitworks/How';
-import Footer from './components/footer/Footer';
-import Landing from './pages/landing/Landing';
-import About from './pages/about/About';
-import Register from './pages/register/Register';
-import StudentRegister from './pages/register/StudentRegister';
-import LandlordRegister from './pages/register/LandlordRegister';
-import Login from './pages/login/Login';  
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/header/Header";
+import How from "./pages/howitworks/How";
+import Footer from "./components/footer/Footer";
+import Landing from "./pages/landing/Landing";
+import About from "./pages/about/About";
+import Register from "./pages/register/Register";
+import StudentRegister from "./pages/register/StudentRegister";
+import LandlordRegister from "./pages/register/LandlordRegister";
+import Login from "./pages/login/Login";
 import TermsOfService from "./pages/termsofservice/Termsofservice";
 import PrivacyPolicy from "./pages/privacypolicy/Privacypolicy";
 import CookiePolicy from "./pages/cookiepolicy/Cookiepolicy";
-import SuccessPage from './pages/register/SuccessPage'; 
+import SafetyGuidelines from "./pages/safetyguidelines/Safetyguidelines";
+import SuccessPage from "./pages/register/SuccessPage";
 import TransitionWrapper from "./components/transition/TransitionWrapper";
-import ScrollToTop from './components/scrollbehavior/ScrollToTop';
+import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
 import "./App.css";
 
 const App = () => {
@@ -34,7 +35,8 @@ const App = () => {
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/CookiePolicy" element={<CookiePolicy />} />
-          <Route path="/Success" element={<SuccessPage />} /> 
+          <Route path="/SafetyGuidelines" element={<SafetyGuidelines />} />
+          <Route path="/Success" element={<SuccessPage />} />
         </Routes>
       </TransitionWrapper>
       <Footer />
