@@ -25,6 +25,8 @@ const buttonVariants = cva(
           "bg-[#F5F5F5] text-[#1F1F1F] mr-auto justify-start font-semibold px-1 py-6 rounded-lg hover:bg-[#0077B5] hover:text-white transition duration-300",
         clearlarge:
           "bg-transparent mr-auto justify-start font-semibold px-1 py-6 rounded-lg text-white border border-white",
+        solid:
+          "my-4 px-10 py-3 mt-8 rounded-full bg-[#0077B5] text-white shadow-lg",
         clear:
           "rounded-full px-4 py-1 text-[#0077B5] bg-transparent font-semibold hover:text-white hover:bg-[#0077B5] text-base leading-tight text-left transition duration-100",
       },

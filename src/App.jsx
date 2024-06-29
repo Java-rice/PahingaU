@@ -12,13 +12,16 @@ import Login from './pages/login/Login';
 import TermsOfService from "./pages/termsofservice/Termsofservice";
 import PrivacyPolicy from "./pages/privacypolicy/Privacypolicy";
 import CookiePolicy from "./pages/cookiepolicy/Cookiepolicy";
+import SuccessPage from './pages/register/SuccessPage'; 
 import TransitionWrapper from "./components/transition/TransitionWrapper";
+import ScrollToTop from './components/scrollbehavior/ScrollToTop';
 import "./App.css";
 
 const App = () => {
   return (
     <Router>
       <Header />
+      <ScrollToTop />
       <TransitionWrapper>
         <Routes>
           <Route path="/" element={<Landing />} />
@@ -31,6 +34,7 @@ const App = () => {
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/CookiePolicy" element={<CookiePolicy />} />
+          <Route path="/Success" element={<SuccessPage />} /> 
         </Routes>
       </TransitionWrapper>
       <Footer />

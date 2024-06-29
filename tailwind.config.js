@@ -9,6 +9,9 @@ export default {
       screens: {
         'lg': '1000px',
       },
+      animation: {
+        'spin-slow': 'spin 8s linear infinite',
+      },
     },
   },
   plugins: [],
