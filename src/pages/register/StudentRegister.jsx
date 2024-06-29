@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import loginBG from "../../assets/loginBG.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +21,8 @@ const StudentRegister = () => {
       under4000: false,
     },
   });
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -44,6 +47,8 @@ const StudentRegister = () => {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Form submitted:", form);
+    // Navigate to the success page after form submission
+    navigate("/success");
   };
 
   const handleRentPriceToggle = (price) => {
@@ -188,7 +193,7 @@ const StudentRegister = () => {
                   name="phone"
                   placeholder="Phone Number"
                   className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  pattern="\+63 [0-9]{3} [0-9]{3} [0-9]{4}"
+                  pattern="[0-9]{11}"
                   value={form.phone}
                   onChange={handleChange}
                   required
