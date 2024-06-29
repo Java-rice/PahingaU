@@ -1,5 +1,4 @@
 import React from "react";
-import "./Termsofservice.css";
 import { Button } from "../../components/buttons/Button";
 
 const TermsOfService = () => {
