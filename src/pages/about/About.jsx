@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import backgroundImage from "../../assets/about_bg.png";
+import { Link } from "react-router-dom";
 import { Button } from "../../components/buttons/Button";
 import aboutsection2img from "../../assets/about-section2.jpg";
 import aboutsection2icon from "../../assets/about-section2-icon.png";
@@ -64,7 +65,6 @@ const About = () => {
             place where you can thrive, study, and create unforgettable
             memories.
           </p>
-          <Button variant="whitelarge">Learn More</Button>
         </div>
       </div>
       <div className="flex justify-center items-center py-40">
@@ -119,7 +119,9 @@ const About = () => {
             <h1 className="text-4xl font-semibold mb-6">
               Your Ultimate Dorm Hunting Companion
             </h1>
-            <Button variant="clearlarge">Hunt Now!</Button>
+            <Link to="/Login">
+              <Button variant="whitelarge">Hunt Now!</Button>
+            </Link>
           </div>
           <div className="flex flex-wrap lg:flex-nowrap lg:space-x-6 space-y-6 lg:space-y-0 text-white lg:w-2/3">
             <div className="w-full lg:w-1/3 bg-transparent border border-white p-8 rounded-lg shadow-md flex flex-col items-center">
@@ -191,7 +193,7 @@ const About = () => {
                     </button>
                   </div>
                   {expanded[index] && (
-                    <p className="text-lg mt-2 ml-5">{faq.answer}</p>
+                    <p className="text-base mt-2 ml-5">{faq.answer}</p>
                   )}
                 </div>
               ))}
