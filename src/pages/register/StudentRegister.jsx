@@ -1,10 +1,9 @@
 // src/pages/register/StudentRegister.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import loginBG from "../../assets/loginBG.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 const StudentRegister = () => {
   const [form, setForm] = useState({
@@ -17,11 +16,11 @@ const StudentRegister = () => {
     confirmPassword: "",
   });
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-
+    const { name, value } = e.target;
     setForm({
       ...form,
       [name]: value,
@@ -30,6 +29,13 @@ const StudentRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Clear any previous error messages
+
+    if (form.password !== form.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3001/api/register/student', {
         method: 'POST',
@@ -44,15 +50,17 @@ const StudentRegister = () => {
         navigate("/success");
       } else {
         const errorData = await response.json();
-        console.error("Registration failed:", errorData.error);
-        // Handle error (e.g., show error message to user)
+        if (errorData.error.includes("UNIQUE constraint failed: students.email")) {
+          setErrorMessage("This email is already registered. Please use a different email.");
+        } else {
+          setErrorMessage("Registration failed: " + errorData.error);
+        }
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      // Handle error (e.g., show error message to user)
+      setErrorMessage("An unexpected error occurred. Please try again.");
     }
   };
-
 
   return (
     <>
@@ -190,6 +198,12 @@ const StudentRegister = () => {
 
             </div>
 
+            {errorMessage && (
+              <div className="w-full px-4 mb-6 text-red-500 text-center">
+                {errorMessage}
+              </div>
+            )}
+
             {/* Register Button */}
             <button
               type="submit"
@@ -201,8 +215,8 @@ const StudentRegister = () => {
             {/* Not a student link */}
             <p className="text-[#404040] mb-4 text-center md:text-left">
               Not a student?{" "}
-              <Link to="/landlord-register" className="text-[#0077B5]">
-                Click here to register as a Landlord
+              <Link to="/landlord/register" className="text-[#0077B5]">
+                Register as a Landlord
               </Link>
             </p>
           </form>
@@ -213,3 +227,4 @@ const StudentRegister = () => {
 };
 
 export default StudentRegister;
+
