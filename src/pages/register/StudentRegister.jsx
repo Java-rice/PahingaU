@@ -215,7 +215,7 @@ const StudentRegister = () => {
             {/* Not a student link */}
             <p className="text-[#404040] mb-4 text-center md:text-left">
               Not a student?{" "}
-              <Link to="/landlord/register" className="text-[#0077B5]">
+              <Link to="/landlord-register" className="text-[#0077B5]">
                 Register as a Landlord
               </Link>
             </p>
