@@ -1,3 +1,4 @@
+// src/pages/about/About.jsx
 import React, { useState } from "react";
 import backgroundImage from "../../assets/about_bg.png";
 import { Link } from "react-router-dom";

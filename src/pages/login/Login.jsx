@@ -1,3 +1,4 @@
+// src/pages/login/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,47 +7,53 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
   const [isLandlord, setIsLandlord] = useState(false);
   const navigate = useNavigate();
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleLandlordChange = () => setIsLandlord(!isLandlord);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
-
-    if (username.trim() === "") {
-      setUsernameError("Username is required");
+  
+    if (email.trim() === "") {
+      setEmailError("Email is required");
       isValid = false;
     } else {
-      setUsernameError("");
+      setEmailError("");
     }
-
+  
     if (password.trim() === "") {
       setPasswordError("Password is required");
       isValid = false;
     } else {
       setPasswordError("");
     }
-
+  
     if (isValid) {
       try {
-        const response = await axios.post('http://localhost:5000/login', { username, password, isLandlord });
+        const response = await axios.post('http://localhost:3001/api/login', { email, password, isLandlord });
         if (response.data.message === "Login successful") {
-          navigate("/profile");
+          // Store user data in localStorage or state management solution
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          console.log("User data stored in localStorage:", response.data.user);
+          // Reload the page to reflect login status
+          navigate("/landing");
+          window.location.reload();
         }
       } catch (error) {
         if (error.response && error.response.status === 400) {
-          setLoginError("Invalid username or password");
+          setLoginError(error.response.data.error);
         } else {
           console.error('There was an error logging in!', error);
+          setLoginError("An unexpected error occurred. Please try again.");
         }
       }
     }
@@ -61,14 +68,14 @@ const Login = () => {
           <div className="relative flex items-center w-full mx-auto my-4">
             <FontAwesomeIcon icon={faUser} className="absolute left-4 text-[#1C1C1C]" />
             <input
-              type="text"
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
               className="block w-full pl-10 p-2 rounded-lg border border-gray-300"
-              value={username}
-              onChange={handleUsernameChange}
+              value={email}
+              onChange={handleEmailChange}
             />
           </div>
-          {usernameError && <p className="text-red-500">{usernameError}</p>}
+          {emailError && <p className="text-red-500">{emailError}</p>}
           <div className="relative flex items-center w-full mx-auto my-4">
             <FontAwesomeIcon icon={faLock} className="absolute left-4 text-[#1C1C1C]" />
             <input
@@ -96,7 +103,7 @@ const Login = () => {
           </button>
         </form>
         <p className="mt-4">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <a href="/register" className="text-[#0077B5] underline font-bold">
             Create an account
           </a>

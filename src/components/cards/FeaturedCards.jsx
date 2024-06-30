@@ -1,3 +1,4 @@
+// src/components/cards/FeaturedCards.jsx
 import React from "react";
 import locationIcon from "../../assets/locationIcon.png";
 import approvalIcon from "../../assets/approvalIcon.png";

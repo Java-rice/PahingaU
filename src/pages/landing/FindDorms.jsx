@@ -1,3 +1,4 @@
+// src/pages/landing/FindDorms.jsx
 import React from 'react';
 import UnivCards from '../../components/cards/UnivCards';
 import feu from '../../assets/feu.png'
