@@ -22,28 +22,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
-
+  
     if (email.trim() === "") {
       setEmailError("Email is required");
       isValid = false;
     } else {
       setEmailError("");
     }
-
+  
     if (password.trim() === "") {
       setPasswordError("Password is required");
       isValid = false;
     } else {
       setPasswordError("");
     }
-
+  
     if (isValid) {
       try {
         const response = await axios.post('http://localhost:3001/api/login', { email, password, isLandlord });
         if (response.data.message === "Login successful") {
           // Store user data in localStorage or state management solution
           localStorage.setItem('user', JSON.stringify(response.data.user));
+          console.log("User data stored in localStorage:", response.data.user);
+          // Reload the page to reflect login status
           navigate("/landing");
+          window.location.reload();
         }
       } catch (error) {
         if (error.response && error.response.status === 400) {
