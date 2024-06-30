@@ -1,9 +1,9 @@
 // src/pages/register/LandlordRegister.jsx
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom"; // Import Link once here
 import loginBG from "../../assets/loginBG.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 const LandlordRegister = () => {
   const [form, setForm] = useState({
@@ -14,6 +14,9 @@ const LandlordRegister = () => {
     confirmPassword: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -22,10 +25,39 @@ const LandlordRegister = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // validation
-    console.log("Form submitted:", form);
+    setErrorMessage(""); // Clear any previous error messages
+
+    if (form.password !== form.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/register/landlord', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        console.log("Landlord registered successfully");
+        navigate("/success");
+      } else {
+        const errorData = await response.json();
+        if (errorData.error.includes("UNIQUE constraint failed: landlords.email")) {
+          setErrorMessage("This email is already registered. Please use a different email.");
+        } else {
+          setErrorMessage("Registration failed: " + errorData.error);
+        }
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
@@ -86,7 +118,7 @@ const LandlordRegister = () => {
                 name="phone"
                 placeholder="Phone Number"
                 className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                pattern="\+63 [0-9]{3} [0-9]{3} [0-9]{4}"
+                pattern="[0-9]{11}"
                 value={form.phone}
                 onChange={handleChange}
                 required
@@ -127,6 +159,12 @@ const LandlordRegister = () => {
               </div>
             </div>
 
+            {errorMessage && (
+              <div className="w-full px-4 mb-6 text-red-500">
+                {errorMessage}
+              </div>
+            )}
+            
             {/* Register Button */}
             <button
               type="submit"

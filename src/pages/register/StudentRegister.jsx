@@ -15,53 +15,44 @@ const StudentRegister = () => {
     phone: "",
     password: "",
     confirmPassword: "",
-    rentPrices: {
-      under1000: false,
-      under2000: false,
-      under3000: false,
-      under4000: false,
-    },
   });
 
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
 
-    if (type === "checkbox") {
-      setForm({
-        ...form,
-        rentPrices: {
-          ...form.rentPrices,
-          [name]: checked,
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3001/api/register/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(form),
       });
-    } else {
-      setForm({
-        ...form,
-        [name]: value,
-      });
+
+      if (response.ok) {
+        console.log("Student registered successfully");
+        navigate("/success");
+      } else {
+        const errorData = await response.json();
+        console.error("Registration failed:", errorData.error);
+        // Handle error (e.g., show error message to user)
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      // Handle error (e.g., show error message to user)
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", form);
-    // Navigate to the success page after form submission
-    navigate("/success");
-  };
-
-  const handleRentPriceToggle = (price) => {
-    const updatedRentPrices = {
-      ...form.rentPrices,
-      [price]: !form.rentPrices[price],
-    };
-    setForm({
-      ...form,
-      rentPrices: updatedRentPrices,
-    });
-  };
 
   return (
     <>
@@ -144,9 +135,6 @@ const StudentRegister = () => {
                   required
                 />
               </div>
-
-              {/* Preferred Rent Prices */}
-              
 
               {/* Phone Number */}
               <div className="w-full px-4 mb-6">
