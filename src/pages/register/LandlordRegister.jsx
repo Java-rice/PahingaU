@@ -1,3 +1,4 @@
+// src/pages/register/LandlordRegister.jsx
 import React, { useState } from "react";
 import loginBG from "../../assets/loginBG.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

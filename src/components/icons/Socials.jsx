@@ -1,3 +1,4 @@
+// src/components/icons/Socials.jsx
 import React from 'react'
 import Instagram from '../../assets/instagram.png'
 import Facebook from '../../assets/facebook.png'

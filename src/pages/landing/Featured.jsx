@@ -1,3 +1,4 @@
+// src/pages/landing/Featured.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/buttons/Button.jsx";

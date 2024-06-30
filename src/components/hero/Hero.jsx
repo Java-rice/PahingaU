@@ -1,3 +1,4 @@
+// src/components/hero/Hero.jsx
 import React from 'react';
 import { Button } from '../buttons/Button';
 

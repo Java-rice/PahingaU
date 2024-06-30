@@ -1,3 +1,4 @@
+// src/pages/safetyguidelines/Safetyguidelines.jsx
 import React from "react";
 import backgroundImage from "../../assets/safety_bg.png";
 

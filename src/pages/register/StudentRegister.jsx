@@ -1,3 +1,4 @@
+// src/pages/register/StudentRegister.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginBG from "../../assets/loginBG.png";
@@ -145,42 +146,7 @@ const StudentRegister = () => {
               </div>
 
               {/* Preferred Rent Prices */}
-              <div className="w-full px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Preferred Rent Prices</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
-                </label>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under1000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under1000")}
-                  >
-                    {"< $1000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under2000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under2000")}
-                  >
-                    {"< $2000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under3000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under3000")}
-                  >
-                    {"< $3000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under4000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under4000")}
-                  >
-                    {"< $4000"}
-                  </button>
-                </div>
-              </div>
+              
 
               {/* Phone Number */}
               <div className="w-full px-4 mb-6">

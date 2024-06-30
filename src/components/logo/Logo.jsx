@@ -1,3 +1,4 @@
+// src/components/logo/Logo.jsx
 import React from 'react';
 import LogoImage from '../../assets/LogoImage.png';
 
