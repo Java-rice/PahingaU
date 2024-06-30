@@ -1,3 +1,4 @@
+// src/components/cards/PicCards.jsx
 import React from 'react';
 
 const PicCards = ({ icon, title, description }) => {

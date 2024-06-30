@@ -1,3 +1,4 @@
+// src/pages/register/Register.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import registerBG from "../../assets/registerBG.png";

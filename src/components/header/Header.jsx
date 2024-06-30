@@ -1,3 +1,4 @@
+// src/components/header/Header.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Logo from "../logo/Logo";

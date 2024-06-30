@@ -1,3 +1,4 @@
+// src/components/cards/UnivCards.jsx
 import React from 'react';
 
 const UnivCards = ({ univName, location, backgroundImage }) => {

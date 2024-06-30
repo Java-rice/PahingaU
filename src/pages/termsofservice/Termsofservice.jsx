@@ -1,3 +1,4 @@
+// src/pages/termsofservice/Termsofservice.jsx
 import React from "react";
 import { Button } from "../../components/buttons/Button";
 
