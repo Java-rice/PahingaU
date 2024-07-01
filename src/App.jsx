@@ -19,6 +19,7 @@ import TransitionWrapper from "./components/transition/TransitionWrapper";
 import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
 import Profile from "./pages/profile/Profile";
 import FindDorms from "./pages/finddorms/FindDorms";
+import PostProperty from "./pages/postproperty/PostProperty"
 import "./App.css";
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/CookiePolicy" element={<CookiePolicy />} />
           <Route path="/SafetyGuidelines" element={<SafetyGuidelines />} />
+          <Route path="/PostProperty" element={<PostProperty />} />
           <Route path="/Success" element={<SuccessPage />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/FindDorms" element={<FindDorms />} />
