@@ -4,12 +4,12 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { Button } from "../../components/buttons/Button";
-import ListingBesideMapCards from '../../components/cards/ListingBesideMapCards';
+import ListingBesideMapCards from "../../components/cards/ListingBesideMapCards";
 import backgroundImage from "../../assets/FindBg.png";
 import mapLogo from "../../assets/mapLogo.png";
-import FilterHome from '../../components/filterhome/FilterHome'; // Import the new FilterHome component
-import covenantGarden from '../../assets/covenantGarden.png';
-import elpueblo from '../../assets/elpueblocondo.png';
+import FilterHome from "../../components/filterhome/FilterHome"; // Import the new FilterHome component
+import covenantGarden from "../../assets/covenantGarden.png";
+import elpueblo from "../../assets/elpueblocondo.png";
 
 const FindDorms = () => {
   const [map, setMap] = useState(null);
@@ -20,14 +20,15 @@ const FindDorms = () => {
   const [showPlaceDropdown, setShowPlaceDropdown] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState("Price");
   const [selectedPlace, setSelectedPlace] = useState("Type of place");
+  const [marker, setMarker] = useState(null);
 
   const universityCoordinates = {
     "Adamson University": [120.986, 14.6042],
     "Ateneo de Manila University": [121.0777, 14.6407],
-    "De La Salle University": [120.9943, 14.5649],
-    "De La Salle-College of Saint Benilde": [120.9919, 14.5633],
-    "National University, Philippines": [120.9891, 14.6052],
-    "Polytechnic University of the Philippines": [121.0164, 14.5986],
+    "De La Salle University": [120.9932, 14.5648],
+    "De La Salle-College of Saint Benilde": [120.9951, 14.5636],
+    "National University, Philippines": [120.9946, 14.6043],
+    "Polytechnic University of the Philippines": [121.0108, 14.5979],
     "University of Santo Tomas": [120.9896, 14.6093],
     "University of the Philippines Diliman": [121.0657, 14.6537],
     "University of the Philippines Manila": [120.9918, 14.5806],
@@ -55,7 +56,8 @@ const FindDorms = () => {
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
         center: initialCenter,
-        zoom: 15,
+        zoom: 13,
+        minZoom: 13,
       });
 
       mapInstance.addControl(new mapboxgl.NavigationControl());
@@ -67,6 +69,12 @@ const FindDorms = () => {
       );
 
       setMap(mapInstance);
+
+      // Create a marker and set its initial position
+      const initialMarker = new mapboxgl.Marker()
+        .setLngLat(initialCenter)
+        .addTo(mapInstance);
+      setMarker(initialMarker);
     };
 
     if (!map) {
@@ -78,7 +86,11 @@ const FindDorms = () => {
 
   useEffect(() => {
     if (map && fromInput && universityCoordinates[fromInput]) {
+      map.setMaxBounds(null);
+      map.setZoom(12);
+      marker.setLngLat(universityCoordinates[fromInput]);
       map.setCenter(universityCoordinates[fromInput]);
+      map.setMaxBounds(map.getBounds());
     }
   }, [fromInput, map]);
 
@@ -87,18 +99,6 @@ const FindDorms = () => {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
     });
-
-    const response = await geocoder.query({ query: fromInput });
-    const coordinates =
-      response && response.features && response.features.length > 0
-        ? response.features[0].center
-        : null;
-
-    if (coordinates) {
-      map.setCenter(coordinates);
-    } else {
-      alert("Location not found");
-    }
   };
 
   const fetchRoute = async () => {
@@ -154,45 +154,46 @@ const FindDorms = () => {
     {
       id: 1,
       image: covenantGarden,
-      title: 'Covent Garden Sta. Mesa Condo for Rent near PUP & UERM',
-      details: '4-6 guests · Entire Condo · 6 beds · Shared bath · Wifi · Kitchen · Free Parking',
-      price: 'Php 5,680 /month',
+      title: "Covent Garden Sta. Mesa Condo for Rent near PUP & UERM",
+      details:
+        "4-6 guests · Entire Condo · 6 beds · Shared bath · Wifi · Kitchen · Free Parking",
+      price: "Php 5,680 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
@@ -215,9 +216,13 @@ const FindDorms = () => {
                 value={fromInput}
                 onChange={(e) => setFromInput(e.target.value)}
               >
-                <option value="" disabled>Select University</option>
+                <option value="" disabled>
+                  Select University
+                </option>
                 {Object.keys(universityCoordinates).map((option) => (
-                  <option key={option} value={option}>{option}</option>
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
                 ))}
               </select>
             )}
@@ -227,7 +232,11 @@ const FindDorms = () => {
             >
               <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
             </button>
-            <Button variant="solidm" onClick={fetchRoute} className="rounded-r-full">
+            <Button
+              variant="solidm"
+              onClick={fetchRoute}
+              className="rounded-r-full"
+            >
               Search
             </Button>
           </div>
@@ -247,21 +256,26 @@ const FindDorms = () => {
 
         <div className="mb-16 flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
-            <div id="map" className="h-[600px] w-full rounded-lg shadow-md"></div>
+            <div
+              id="map"
+              className="h-[600px] w-full rounded-lg shadow-md"
+            ></div>
           </div>
-          <div className="lg:w-1/2 overflow-y-auto" style={{maxHeight: '600px'}}>
-            {dummyListings.map(listing => (
-              <ListingBesideMapCards
-                key={listing.id}
-                {...listing}
-              />
+          <div
+            className="lg:w-1/2 overflow-y-auto"
+            style={{ maxHeight: "600px" }}
+          >
+            {dummyListings.map((listing) => (
+              <ListingBesideMapCards key={listing.id} {...listing} />
             ))}
           </div>
         </div>
 
         {distance !== null && (
           <div className="mt-4 p-4 bg-white text-black rounded-lg shadow-lg">
-            <p><strong>Distance:</strong> {distance.toFixed(2)} km</p>
+            <p>
+              <strong>Distance:</strong> {distance.toFixed(2)} km
+            </p>
             <Button variant="solidm" onClick={clearRoute} className="mt-2">
               Clear Route
             </Button>
