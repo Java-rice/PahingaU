@@ -54,6 +54,7 @@ function createTables() {
     accommodationType TEXT,
     amenities TEXT,
     price REAL,
+    slot INTEGER,
     FOREIGN KEY (landlordId) REFERENCES landlords(id)
   )`);
 }
@@ -154,17 +155,17 @@ app.post('/api/housing/add', (req, res) => {
   const {
     landlordId, latitude, longitude, address, image,
     description, housingType, leasingOption, accommodationType,
-    amenities, price
+    amenities, price, slot
   } = req.body;
 
   const query = `INSERT INTO housing (
     landlordId, latitude, longitude, address, image, description,
-    housingType, leasingOption, accommodationType, amenities, price
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    housingType, leasingOption, accommodationType, amenities, price, slot
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.run(query, [
     landlordId, latitude, longitude, address, image, description,
-    housingType, leasingOption, accommodationType, amenities, price
+    housingType, leasingOption, accommodationType, amenities, price, slot
   ], function (err) {
     if (err) {
       return res.status(400).json({ error: err.message });
