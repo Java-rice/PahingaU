@@ -10,6 +10,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLandlord, setIsLandlord] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +39,9 @@ const Header = () => {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
+      const userData = JSON.parse(user);
       setIsLoggedIn(true);
+      setIsLandlord(userData.isLandlord); // Ensure this correctly retrieves the landlord status
     }
   }, []);
 
@@ -49,6 +52,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     setIsLoggedIn(false);
+    setIsLandlord(false);
     navigate('/');
   };
 
@@ -116,15 +120,17 @@ const Header = () => {
                   Find Dorms
                 </NavLink>
               </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <NavLink
-                  to={isLoggedIn ? "/PostProperty" : "/Login"}
-                  activeClassName="text-[#0077B5]"
-                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                >
-                  Post My Property
-                </NavLink>
-              </li>
+              {isLandlord && ( // Display "Post Property" only if user is a landlord
+                <li className="text-base font-bold font-sans cursor-pointer">
+                  <NavLink
+                    to="/PostProperty"
+                    activeClassName="text-[#0077B5]"
+                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                  >
+                    Post My Property
+                  </NavLink>
+                </li>
+              )}
               <li className="text-base font-bold font-sans cursor-pointer">
                 <NavLink
                   to="/HowItWorks"
@@ -195,15 +201,17 @@ const Header = () => {
                     Find Dorms
                   </NavLink>
                 </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    to={isLoggedIn ? "/PostProperty" : "/Login"}
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  >
-                    Post My Property
-                  </NavLink>
-                </li>
+                {isLandlord && ( // Display "Post Property" only if user is a landlord
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <NavLink
+                      to="/PostProperty"
+                      activeClassName="text-[#0077B5]"
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Post My Property
+                    </NavLink>
+                  </li>
+                )}
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
                     to="/HowItWorks"
