@@ -10,6 +10,7 @@ import mapLogo from "../../assets/mapLogo.png";
 //Listing images
 import covenantGarden from "../../assets/covenantGarden.png";
 import elpueblo from "../../assets/elpueblocondo.png";
+
 const FindDorms = () => {
   const [map, setMap] = useState(null);
   const [fromInput, setFromInput] = useState("");
@@ -19,14 +20,15 @@ const FindDorms = () => {
   const [showPlaceDropdown, setShowPlaceDropdown] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState("Price");
   const [selectedPlace, setSelectedPlace] = useState("Type of place");
+  const [marker, setMarker] = useState(null);
 
   const universityCoordinates = {
     "Adamson University": [120.986, 14.6042],
     "Ateneo de Manila University": [121.0777, 14.6407],
-    "De La Salle University": [120.9943, 14.5649],
-    "De La Salle-College of Saint Benilde": [120.9919, 14.5633],
-    "National University, Philippines": [120.9891, 14.6052],
-    "Polytechnic University of the Philippines": [121.0164, 14.5986],
+    "De La Salle University": [120.9932, 14.5648],
+    "De La Salle-College of Saint Benilde": [120.9951, 14.5636],
+    "National University, Philippines": [120.9946, 14.6043],
+    "Polytechnic University of the Philippines": [121.0108, 14.5979],
     "University of Santo Tomas": [120.9896, 14.6093],
     "University of the Philippines Diliman": [121.0657, 14.6537],
     "University of the Philippines Manila": [120.9918, 14.5806],
@@ -67,6 +69,12 @@ const FindDorms = () => {
       );
 
       setMap(mapInstance);
+
+      // Create a marker and set its initial position
+      const initialMarker = new mapboxgl.Marker()
+        .setLngLat(initialCenter)
+        .addTo(mapInstance);
+      setMarker(initialMarker);
     };
 
     if (!map) {
@@ -80,6 +88,7 @@ const FindDorms = () => {
     if (map && fromInput && universityCoordinates[fromInput]) {
       map.setMaxBounds(null);
       map.setZoom(12);
+      marker.setLngLat(universityCoordinates[fromInput]);
       map.setCenter(universityCoordinates[fromInput]);
       map.setMaxBounds(map.getBounds());
     }

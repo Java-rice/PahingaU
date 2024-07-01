@@ -40,16 +40,32 @@ function createTables() {
     phone TEXT,
     password TEXT
   )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS housing (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    landlordId INTEGER,
+    latitude REAL,
+    longitude REAL,
+    address TEXT,
+    image TEXT,
+    description TEXT,
+    housingType TEXT,
+    leasingOption TEXT,
+    accommodationType TEXT,
+    amenities TEXT,
+    price REAL,
+    FOREIGN KEY (landlordId) REFERENCES landlords(id)
+  )`);
 }
 
 // University coordinates
 const universityCoordinates = {
   "Adamson University": { latitude: 14.5895, longitude: 120.9860 },
   "Ateneo de Manila University": { latitude: 14.6394, longitude: 121.0782 },
-  "De La Salle University": { latitude: 14.5646, longitude: 120.9936 },
-  "De La Salle-College of Saint Benilde": { latitude: 14.5634, longitude: 120.9942 },
-  "National University, Philippines": { latitude: 14.6047, longitude: 120.9851 },
-  "Polytechnic University of the Philippines": { latitude: 14.5965, longitude: 120.9832 },
+  "De La Salle University": { latitude: 14.5648, longitude: 120.9932 },
+  "De La Salle-College of Saint Benilde": { latitude: 14.5636, longitude: 120.9951 },
+  "National University, Philippines": { latitude: 14.6043, longitude: 120.9946 },
+  "Polytechnic University of the Philippines": { latitude: 14.5979, longitude: 121.0108 },
   "University of Santo Tomas": { latitude: 14.6090, longitude: 120.9891 },
   "University of the Philippines Diliman": { latitude: 14.6537, longitude: 121.0687 },
   "University of the Philippines Manila": { latitude: 14.5800, longitude: 120.9862 },
@@ -129,6 +145,42 @@ app.post('/api/login', (req, res) => {
       const { password, ...userWithoutPassword } = user;
       res.json({ message: 'Login successful', user: userWithoutPassword });
     });
+  });
+});
+
+// Add new housing entry endpoint
+app.post('/api/housing/add', (req, res) => {
+  const {
+    landlordId, latitude, longitude, address, image,
+    description, housingType, leasingOption, accommodationType,
+    amenities, price
+  } = req.body;
+
+  const query = `INSERT INTO housing (
+    landlordId, latitude, longitude, address, image, description,
+    housingType, leasingOption, accommodationType, amenities, price
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.run(query, [
+    landlordId, latitude, longitude, address, image, description,
+    housingType, leasingOption, accommodationType, amenities, price
+  ], function (err) {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    res.json({ message: 'Housing entry added successfully', id: this.lastID });
+  });
+});
+
+// Get all housing entries
+app.get('/api/housing', (req, res) => {
+  const query = `SELECT * FROM housing`;
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ housing: rows });
   });
 });
 
