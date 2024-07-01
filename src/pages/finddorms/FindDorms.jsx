@@ -7,9 +7,15 @@ import { Button } from "../../components/buttons/Button";
 import ListingBesideMapCards from "../../components/cards/ListingBesideMapCards";
 import backgroundImage from "../../assets/FindBg.png";
 import mapLogo from "../../assets/mapLogo.png";
+<<<<<<< HEAD
 //Listing images
 import covenantGarden from "../../assets/covenantGarden.png";
 import elpueblo from "../../assets/elpueblocondo.png";
+=======
+import FilterHome from '../../components/filterhome/FilterHome'; // Import the new FilterHome component
+import covenantGarden from '../../assets/covenantGarden.png';
+import elpueblo from '../../assets/elpueblocondo.png';
+>>>>>>> origin/kurt
 
 const FindDorms = () => {
   const [map, setMap] = useState(null);
@@ -32,7 +38,7 @@ const FindDorms = () => {
     "University of Santo Tomas": [120.9896, 14.6093],
     "University of the Philippines Diliman": [121.0657, 14.6537],
     "University of the Philippines Manila": [120.9918, 14.5806],
-    "University of the Philippines System": [121.0657, 14.6537], // Assuming UP Diliman as the main campus
+    "University of the Philippines System": [121.0657, 14.6537],
   };
 
   useEffect(() => {
@@ -108,16 +114,15 @@ const FindDorms = () => {
       return;
     }
 
-    // Simulating fetching route data from API
     const route = {
       type: "LineString",
       coordinates: [
         [coordinates[0], coordinates[1]],
-        [coordinates[0] + 0.01, coordinates[1] + 0.01], // Example route coordinates
+        [coordinates[0] + 0.01, coordinates[1] + 0.01],
       ],
     };
 
-    setDistance(1.5); // Example distance
+    setDistance(1.5);
 
     if (map.getSource("route")) {
       map.getSource("route").setData({
@@ -150,19 +155,6 @@ const FindDorms = () => {
       map.removeSource("route");
     }
   };
-
-  const options = [
-    "Adamson University",
-    "Ateneo de Manila University",
-    "De La Salle University",
-    "De La Salle-College of Saint Benilde",
-    "National University, Philippines",
-    "Polytechnic University of the Philippines",
-    "University of Santo Tomas",
-    "University of the Philippines Diliman",
-    "University of the Philippines Manila",
-    "University of the Philippines System",
-  ];
 
   const dummyListings = [
     {
@@ -202,6 +194,15 @@ const FindDorms = () => {
       rating: 5.0,
       reviews: 318,
     },
+    {
+      id: 2,
+      image: elpueblo,
+      title: 'El Pueblo Condo For Rent',
+      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
+      price: 'Php 6,755 /month',
+      rating: 5.0,
+      reviews: 318,
+    },
     // Add more dummy listings as needed
   ];
 
@@ -221,6 +222,7 @@ const FindDorms = () => {
                 value={fromInput}
                 onChange={(e) => setFromInput(e.target.value)}
               >
+<<<<<<< HEAD
                 <option value="" disabled>
                   Select University
                 </option>
@@ -228,6 +230,11 @@ const FindDorms = () => {
                   <option key={option} value={option}>
                     {option}
                   </option>
+=======
+                <option value="" disabled>Select University</option>
+                {Object.keys(universityCoordinates).map((option) => (
+                  <option key={option} value={option}>{option}</option>
+>>>>>>> origin/kurt
                 ))}
               </select>
             )}
@@ -247,6 +254,7 @@ const FindDorms = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* Filter Section */}
         <div className="mb-16 flex flex-wrap gap-2 justify-center">
           {/* Price Dropdown */}
@@ -379,6 +387,23 @@ const FindDorms = () => {
               id="map"
               className="h-[600px] w-full rounded-lg shadow-md"
             ></div>
+=======
+        {/* Use the FilterHome component */}
+        <FilterHome
+          selectedPrice={selectedPrice}
+          setSelectedPrice={setSelectedPrice}
+          showPriceDropdown={showPriceDropdown}
+          setShowPriceDropdown={setShowPriceDropdown}
+          selectedPlace={selectedPlace}
+          setSelectedPlace={setSelectedPlace}
+          showPlaceDropdown={showPlaceDropdown}
+          setShowPlaceDropdown={setShowPlaceDropdown}
+        />
+
+        <div className="mb-16 flex flex-col lg:flex-row gap-8">
+          <div className="lg:w-1/2">
+            <div id="map" className="h-[600px] w-full rounded-lg shadow-md"></div>
+>>>>>>> origin/kurt
           </div>
           <div
             className="lg:w-1/2 overflow-y-auto"
