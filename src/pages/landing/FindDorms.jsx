@@ -24,7 +24,7 @@ const FindDorms = () => {
                 Find Dorms in These Universities
             </h1>
             <p className="font-poppins text-center text-xl leading-[32px]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Begin your college journey with a perfect dorm
             </p>
         </div>
         <div className='flex flex-wrap gap-4 py-12 justify-center items-center'>
