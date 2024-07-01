@@ -22,6 +22,13 @@ const Profile = () => {
     navigate("/");
   };
 
+  const getAccountType = () => {
+    if (user) {
+      return user.hasOwnProperty("university") ? "Renter" : "Landowner";
+    }
+    return "";
+  };
+
   return (
     <div className="min-h-screen p-4 bg-white font-montserrat">
       <div className="flex flex-col md:flex-row h-full w-full">
@@ -99,7 +106,7 @@ const Profile = () => {
             </div>
             <div className="flex justify-between items-center py-2 border-b border-gray-300">
               <span className="font-medium">Account Type</span>
-              <span className="flex-1 text-right mr-4">Renter</span>
+              <span className="flex-1 text-right mr-4">{getAccountType()}</span>
             </div>
           </div>
         </div>
