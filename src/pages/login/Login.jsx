@@ -45,7 +45,7 @@ const Login = () => {
           localStorage.setItem('user', JSON.stringify(response.data.user));
           console.log("User data stored in localStorage:", response.data.user);
           // Reload the page to reflect login status
-          navigate("/landing");
+          navigate("/Profile");
           window.location.reload();
         }
       } catch (error) {

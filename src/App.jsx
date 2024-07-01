@@ -17,6 +17,7 @@ import SafetyGuidelines from "./pages/safetyguidelines/Safetyguidelines";
 import SuccessPage from "./pages/register/SuccessPage";
 import TransitionWrapper from "./components/transition/TransitionWrapper";
 import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
+import Profile from "./pages/profile/Profile";
 import "./App.css";
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/CookiePolicy" element={<CookiePolicy />} />
           <Route path="/SafetyGuidelines" element={<SafetyGuidelines />} />
           <Route path="/Success" element={<SuccessPage />} />
+          <Route path="/Profile" element={<Profile />} />
         </Routes>
       </TransitionWrapper>
       <Footer />
