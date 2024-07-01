@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import React, { useState, useEffect } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { Button } from "../../components/buttons/Button";
 import ListingBesideMapCards from '../../components/cards/ListingBesideMapCards';
 import backgroundImage from "../../assets/FindBg.png";
