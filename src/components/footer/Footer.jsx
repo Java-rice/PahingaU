@@ -12,10 +12,10 @@ const Footer = () => {
           <div className="w-full md:w-1/3 px-1 mb-8 gap-10 text-center md:text-left">
             <Logo />
             <p className="text-gray-700 mb-4 mt-4">
-              Nam posuere accumsan porta integer id orci sed ante tincidunt et
-              amet sed libero.
+              Your Trusted Guide to Student Living in Metro Manila.
+              Simplify Your Search, Secure Your Stay.
             </p>
-            <p className="text-gray-600">© AnoNameNatin 2024</p>
+            <p className="text-gray-600">© PahingaU 2024</p>
           </div>
           <div className="w-full md:w-1/5 px-1 mb-8 text-center md:text-left">
             <h4 className="text-lg font-bold mb-4 text-[#0077B5]">RENTING</h4>
