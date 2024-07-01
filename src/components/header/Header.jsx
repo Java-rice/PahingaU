@@ -1,16 +1,17 @@
 // src/components/header/Header.jsx
-import React, { useState, useEffect, useContext } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { Button } from "../buttons/Button";
 import "./Header.css";
-
 
 const Header = () => {
   const [clicked, setClicked] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenu, setIsMobileMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Example state for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLandlord, setIsLandlord] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,12 +36,24 @@ const Header = () => {
     };
   }, [clicked]);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userData = JSON.parse(user);
+      setIsLoggedIn(true);
+      setIsLandlord(userData.isLandlord); // Ensure this correctly retrieves the landlord status
+    }
+  }, []);
+
   const handleClick = () => {
     setClicked(!clicked);
   };
 
-  const handleClose = () => {
-    setClicked(false);
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setIsLandlord(false);
+    navigate('/');
   };
 
   return (
@@ -107,15 +120,17 @@ const Header = () => {
                   Find Dorms
                 </NavLink>
               </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <NavLink
-                  to={isLoggedIn ? "/PostProperty" : "/Login"}
-                  activeClassName="text-[#0077B5]"
-                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                >
-                  Post My Property
-                </NavLink>
-              </li>
+              {isLandlord && ( // Display "Post Property" only if user is a landlord
+                <li className="text-base font-bold font-sans cursor-pointer">
+                  <NavLink
+                    to="/PostProperty"
+                    activeClassName="text-[#0077B5]"
+                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                  >
+                    Post My Property
+                  </NavLink>
+                </li>
+              )}
               <li className="text-base font-bold font-sans cursor-pointer">
                 <NavLink
                   to="/HowItWorks"
@@ -125,20 +140,32 @@ const Header = () => {
                   How It Works
                 </NavLink>
               </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <Button variant="clear">
-                  <NavLink to="/Login" activeClassName="text-[#0077B5]">
-                    Login
-                  </NavLink>
-                </Button>
-              </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <Button variant="dark">
-                  <NavLink to="/Register" activeClassName="text-[#0077B5]">
-                    Register
-                  </NavLink>
-                </Button>
-              </li>
+              {isLoggedIn ? (
+                <>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <Button variant="clear" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <Button variant="clear">
+                      <NavLink to="/Login" activeClassName="text-[#0077B5]">
+                        Login
+                      </NavLink>
+                    </Button>
+                  </li>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <Button variant="dark">
+                      <NavLink to="/Register" activeClassName="text-[#0077B5]">
+                        Register
+                      </NavLink>
+                    </Button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         )}
@@ -174,15 +201,17 @@ const Header = () => {
                     Find Dorms
                   </NavLink>
                 </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    to={isLoggedIn ? "/PostProperty" : "/Login"}
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  >
-                    Post My Property
-                  </NavLink>
-                </li>
+                {isLandlord && ( // Display "Post Property" only if user is a landlord
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <NavLink
+                      to="/PostProperty"
+                      activeClassName="text-[#0077B5]"
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Post My Property
+                    </NavLink>
+                  </li>
+                )}
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
                     to="/HowItWorks"
@@ -192,20 +221,32 @@ const Header = () => {
                     How It Works
                   </NavLink>
                 </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <Button variant="clear">
-                    <NavLink to="/Login" activeClassName="text-[#0077B5]">
-                      Login
-                    </NavLink>
-                  </Button>
-                </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <Button variant="dark">
-                    <NavLink to="/Register" activeClassName="text-[#0077B5]">
-                      Register
-                    </NavLink>
-                  </Button>
-                </li>
+                {isLoggedIn ? (
+                  <>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <Button variant="clear" onClick={handleLogout}>
+                        Logout
+                      </Button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <Button variant="clear">
+                        <NavLink to="/Login" activeClassName="text-[#0077B5]">
+                          Login
+                        </NavLink>
+                      </Button>
+                    </li>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <Button variant="dark">
+                        <NavLink to="/Register" activeClassName="text-[#0077B5]">
+                          Register
+                        </NavLink>
+                      </Button>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

@@ -47,10 +47,11 @@ const Login = () => {
           isLandlord,
         });
         if (response.data.message === "Login successful") {
-          // Store user data in localStorage
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-          localStorage.setItem("isLandlord", isLandlord);
-          navigate("/Home");
+          const userData = { ...response.data.user, isLandlord }; // Combine user data with isLandlord flag
+          localStorage.setItem("user", JSON.stringify(userData));
+          console.log("User data stored in localStorage:", userData);
+          navigate("/FindDorms");
+          window.location.reload();
         }
       } catch (error) {
         if (error.response && error.response.status === 400) {

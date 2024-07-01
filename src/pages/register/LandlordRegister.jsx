@@ -160,7 +160,7 @@ const LandlordRegister = () => {
             </div>
 
             {errorMessage && (
-              <div className="w-full px-4 mb-6 text-red-500">
+              <div className="w-full px-4 mb-6 text-red-500 text-center">
                 {errorMessage}
               </div>
             )}
