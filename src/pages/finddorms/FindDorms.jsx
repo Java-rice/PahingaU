@@ -9,9 +9,7 @@ import mapLogo from "../../assets/mapLogo.png";
 
 const FindDorms = () => {
   const [map, setMap] = useState(null);
-  const [waypoints, setWaypoints] = useState([]);
   const [fromInput, setFromInput] = useState("");
-  const [toInput, setToInput] = useState("");
   const [distance, setDistance] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -60,8 +58,6 @@ const FindDorms = () => {
         })
       );
 
-      mapInstance.on("click", handleMapClick);
-
       setMap(mapInstance);
     };
 
@@ -78,84 +74,68 @@ const FindDorms = () => {
     }
   }, [fromInput, map]);
 
-  const handleMapClick = (e) => {
-    setWaypoints((prevWaypoints) => [
-      ...prevWaypoints,
-      {
-        label: prevWaypoints.length === 0 ? "From" : "To",
-        coordinates: [e.lngLat.lng, e.lngLat.lat],
-      },
-    ]);
-  };
-
-  const handleSetWaypointFromInput = async (type) => {
-    const input = type === "from" ? fromInput : toInput;
+  const handleSetWaypointFromInput = async () => {
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
     });
 
-    const response = await geocoder.query({ query: input });
+    const response = await geocoder.query({ query: fromInput });
     const coordinates =
       response && response.features && response.features.length > 0
         ? response.features[0].center
         : null;
 
     if (coordinates) {
-      setWaypoints((prevWaypoints) => [
-        ...prevWaypoints,
-        { label: type === "from" ? "From" : "To", coordinates },
-      ]);
+      map.setCenter(coordinates);
     } else {
       alert("Location not found");
     }
   };
 
   const fetchRoute = async () => {
-    if (waypoints.length < 2) {
-      alert("Please set both From and To waypoints.");
+    const coordinates = universityCoordinates[fromInput];
+    if (!coordinates) {
+      alert("Please select a valid university.");
       return;
     }
 
-    const from = waypoints.find((w) => w.label === "From").coordinates;
-    const to = waypoints.find((w) => w.label === "To").coordinates;
+    // Simulating fetching route data from API
+    const route = {
+      type: "LineString",
+      coordinates: [
+        [coordinates[0], coordinates[1]],
+        [coordinates[0] + 0.01, coordinates[1] + 0.01], // Example route coordinates
+      ],
+    };
 
-    const response = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/driving/${from[0]},${from[1]};${to[0]},${to[1]}?geometries=geojson&access_token=${mapboxgl.accessToken}`
-    );
-    const data = await response.json();
+    setDistance(1.5); // Example distance
 
-    if (data.routes && data.routes.length > 0) {
-      const route = data.routes[0].geometry;
-      setDistance(data.routes[0].distance / 1000); // distance in kilometers
-
-      if (map.getSource("route")) {
-        map.getSource("route").setData({
-          type: "Feature",
-          geometry: route,
-        });
-      } else {
-        map.addLayer({
-          id: "route",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              geometry: route,
-            },
+    if (map.getSource("route")) {
+      map.getSource("route").setData({
+        type: "Feature",
+        geometry: route,
+      });
+    } else {
+      map.addLayer({
+        id: "route",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: route,
           },
-          paint: {
-            "line-color": "#3887be",
-            "line-width": 5,
-          },
-        });
-      }
+        },
+        paint: {
+          "line-color": "#3887be",
+          "line-width": 5,
+        },
+      });
     }
   };
 
-  const clearWaypoints = () => {
-    setWaypoints([]);
+  const clearRoute = () => {
     setDistance(null);
     if (map.getLayer("route")) {
       map.removeLayer("route");
@@ -209,7 +189,7 @@ const FindDorms = () => {
           )}
           <button
             className="mx-2 text-[#1A1A1A] border rounded-full hover:bg-[#2196F3] border-[#E9E9E9] px-5 py-2 hover:text-gray-600"
-            onClick={() => handleSetWaypointFromInput("from")}
+            onClick={handleSetWaypointFromInput}
           >
             <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
           </button>
@@ -220,25 +200,14 @@ const FindDorms = () => {
         <div className="w-[80%] h-[500px] mt-5">
           <div id="map" style={{ height: "100%", width: "100%" }}></div>
         </div>
-        {waypoints.length > 0 && (
-          <div className="mt-4 p-2 bg-white text-black rounded-lg shadow-lg">
-            {waypoints.map((waypoint, index) => (
-              <p key={index}>
-                <strong>{waypoint.label}:</strong>{" "}
-                {waypoint.coordinates[1].toFixed(4)},{" "}
-                {waypoint.coordinates[0].toFixed(4)}
-              </p>
-            ))}
-            <Button variant="solidm" onClick={clearWaypoints}>
-              Clear Waypoints
-            </Button>
-          </div>
-        )}
         {distance !== null && (
           <div className="mt-4 p-2 bg-white text-black rounded-lg shadow-lg">
             <p>
               <strong>Distance:</strong> {distance.toFixed(2)} km
             </p>
+            <Button variant="solidm" onClick={clearRoute}>
+              Clear Route
+            </Button>
           </div>
         )}
       </div>
