@@ -23,18 +23,18 @@ const StudentRegister = () => {
   const universityCoordinates = {
     "Adamson University": { latitude: 14.5895, longitude: 120.986 },
     "Ateneo de Manila University": { latitude: 14.6394, longitude: 121.0782 },
-    "De La Salle University": { latitude: 14.5646, longitude: 120.9936 },
+    "De La Salle University": { latitude: 14.5648, longitude: 120.9932 },
     "De La Salle-College of Saint Benilde": {
-      latitude: 14.5634,
-      longitude: 120.9942,
+      latitude: 14.5636,
+      longitude: 120.9951,
     },
     "National University, Philippines": {
-      latitude: 14.6047,
-      longitude: 120.9851,
+      latitude: 14.6043,
+      longitude: 120.9946,
     },
     "Polytechnic University of the Philippines": {
-      latitude: 14.5965,
-      longitude: 120.9832,
+      latitude: 14.5979,
+      longitude: 121.0108,
     },
     "University of Santo Tomas": { latitude: 14.609, longitude: 120.9891 },
     "University of the Philippines Diliman": {
