@@ -1,8 +1,8 @@
-// src/components/header/Header.jsx
 import React, { useState, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { Button } from "../buttons/Button";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./Header.css";
 
 const Header = () => {
@@ -44,10 +44,6 @@ const Header = () => {
       setIsLandlord(userData.isLandlord); // Ensure this correctly retrieves the landlord status
     }
   }, []);
-
-  const handleClick = () => {
-    setClicked(!clicked);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -143,9 +139,14 @@ const Header = () => {
               {isLoggedIn ? (
                 <>
                   <li className="text-base font-bold font-sans cursor-pointer">
-                    <Button variant="clear" onClick={handleLogout}>
-                      Logout
-                    </Button>
+                    <NavLink
+                      to="/Profile"
+                      activeClassName="text-[#0077B5]"
+                      className="flex items-center hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Profile
+                      <AccountCircleIcon className="ml-1" />
+                    </NavLink>
                   </li>
                 </>
               ) : (
@@ -224,9 +225,14 @@ const Header = () => {
                 {isLoggedIn ? (
                   <>
                     <li className="text-base font-bold font-sans cursor-pointer">
-                      <Button variant="clear" onClick={handleLogout}>
-                        Logout
-                      </Button>
+                      <NavLink
+                        to="/Profile"
+                        activeClassName="text-[#0077B5]"
+                        className="flex items-center hover:text-[#0077B5] transition duration-300 ease-in-out"
+                      >
+                        Profile
+                        <AccountCircleIcon className="ml-1" />
+                      </NavLink>
                     </li>
                   </>
                 ) : (
