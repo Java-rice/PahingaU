@@ -14,6 +14,12 @@ export default {
       },
       colors: {
         'custom-blue': '#0077B5',
+      },
+      boxShadow: {
+        'right': '4px 0px 10px rgba(0, 0, 0, 0.1)', // Adjust the values to get the desired effect
+      },
+      fontFamily: {
+        'montserrat': ['Montserrat', 'sans-serif'],
       }
     },
   },
