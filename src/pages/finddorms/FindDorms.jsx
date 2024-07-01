@@ -4,12 +4,12 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { Button } from "../../components/buttons/Button";
-import ListingBesideMapCards from '../../components/cards/ListingBesideMapCards';
+import ListingBesideMapCards from "../../components/cards/ListingBesideMapCards";
 import backgroundImage from "../../assets/FindBg.png";
 import mapLogo from "../../assets/mapLogo.png";
 //Listing images
-import covenantGarden from '../../assets/covenantGarden.png';
-import elpueblo from '../../assets/elpueblocondo.png';
+import covenantGarden from "../../assets/covenantGarden.png";
+import elpueblo from "../../assets/elpueblocondo.png";
 const FindDorms = () => {
   const [map, setMap] = useState(null);
   const [fromInput, setFromInput] = useState("");
@@ -19,7 +19,6 @@ const FindDorms = () => {
   const [showPlaceDropdown, setShowPlaceDropdown] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState("Price");
   const [selectedPlace, setSelectedPlace] = useState("Type of place");
-
 
   const universityCoordinates = {
     "Adamson University": [120.986, 14.6042],
@@ -55,8 +54,8 @@ const FindDorms = () => {
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
         center: initialCenter,
-        zoom: 15,
-        minZoom: 15,
+        zoom: 13,
+        minZoom: 13,
       });
 
       mapInstance.addControl(new mapboxgl.NavigationControl());
@@ -80,7 +79,7 @@ const FindDorms = () => {
   useEffect(() => {
     if (map && fromInput && universityCoordinates[fromInput]) {
       map.setMaxBounds(null);
-      map.setZoom(15);
+      map.setZoom(12);
       map.setCenter(universityCoordinates[fromInput]);
       map.setMaxBounds(map.getBounds());
     }
@@ -160,36 +159,37 @@ const FindDorms = () => {
     {
       id: 1,
       image: covenantGarden,
-      title: 'Covent Garden Sta. Mesa Condo for Rent near PUP & UERM',
-      details: '4-6 guests · Entire Condo · 6 beds · Shared bath · Wifi · Kitchen · Free Parking',
-      price: 'Php 5,680 /month',
+      title: "Covent Garden Sta. Mesa Condo for Rent near PUP & UERM",
+      details:
+        "4-6 guests · Entire Condo · 6 beds · Shared bath · Wifi · Kitchen · Free Parking",
+      price: "Php 5,680 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
     {
       id: 2,
       image: elpueblo,
-      title: 'El Pueblo Condo For Rent',
-      details: '4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen',
-      price: 'Php 6,755 /month',
+      title: "El Pueblo Condo For Rent",
+      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
+      price: "Php 6,755 /month",
       rating: 5.0,
       reviews: 318,
     },
@@ -198,7 +198,6 @@ const FindDorms = () => {
 
   return (
     <div className="w-full font-poppins bg-blue-50 min-h-screen">
-      
       <main className="max-w-7xl mx-auto py-8 px-4">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-2">Welcome to PahingaU!</h2>
@@ -213,9 +212,13 @@ const FindDorms = () => {
                 value={fromInput}
                 onChange={(e) => setFromInput(e.target.value)}
               >
-                <option value="" disabled>Select University</option>
+                <option value="" disabled>
+                  Select University
+                </option>
                 {options.map((option) => (
-                  <option key={option} value={option}>{option}</option>
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
                 ))}
               </select>
             )}
@@ -225,17 +228,21 @@ const FindDorms = () => {
             >
               <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
             </button>
-            <Button variant="solidm" onClick={fetchRoute} className="rounded-r-full">
+            <Button
+              variant="solidm"
+              onClick={fetchRoute}
+              className="rounded-r-full"
+            >
               Search
             </Button>
           </div>
         </div>
 
-          {/* Filter Section */}
+        {/* Filter Section */}
         <div className="mb-16 flex flex-wrap gap-2 justify-center">
           {/* Price Dropdown */}
           <div className="relative">
-            <button 
+            <button
               className="px-4 py-2 bg-white rounded-full shadow text-sm flex items-center"
               onClick={() => setShowPriceDropdown(!showPriceDropdown)}
             >
@@ -246,13 +253,16 @@ const FindDorms = () => {
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z" />
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z"
+                />
               </svg>
             </button>
             {showPriceDropdown && (
               <div className="absolute z-50 w-48 mt-2 rounded-lg shadow-lg bg-white left-1/2 transform -translate-x-1/2">
                 <ul className="py-2">
-                  <li 
+                  <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedPrice("Low to High");
@@ -261,7 +271,7 @@ const FindDorms = () => {
                   >
                     Low to High
                   </li>
-                  <li 
+                  <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedPrice("High to Low");
@@ -276,7 +286,7 @@ const FindDorms = () => {
           </div>
 
           <div className="relative">
-            <button 
+            <button
               className="px-4 py-2 bg-white rounded-full shadow text-sm flex items-center"
               onClick={() => setShowPlaceDropdown(!showPlaceDropdown)}
             >
@@ -287,13 +297,16 @@ const FindDorms = () => {
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z" />
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z"
+                />
               </svg>
             </button>
             {showPlaceDropdown && (
               <div className="absolute z-50 w-48 mt-2 rounded-lg shadow-lg bg-white left-1/2 transform -translate-x-1/2">
                 <ul className="py-2">
-                  <li 
+                  <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedPlace("Entire place");
@@ -302,7 +315,7 @@ const FindDorms = () => {
                   >
                     Entire place
                   </li>
-                  <li 
+                  <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedPlace("Private room");
@@ -311,7 +324,7 @@ const FindDorms = () => {
                   >
                     Private room
                   </li>
-                  <li 
+                  <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setSelectedPlace("Shared room");
@@ -325,34 +338,54 @@ const FindDorms = () => {
             )}
           </div>
 
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Internet</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Elevator</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Aircon</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Study Hub</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Community Area</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Kitchen</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Swimming Pool</button>
-          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">Filters</button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Internet
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Elevator
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Aircon
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Study Hub
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Community Area
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Kitchen
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Swimming Pool
+          </button>
+          <button className="px-4 py-2 bg-white rounded-full shadow text-sm">
+            Filters
+          </button>
         </div>
-
 
         <div className="mb-16 flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
-           <div id="map" className="h-[600px] w-full rounded-lg shadow-md"></div>
+            <div
+              id="map"
+              className="h-[600px] w-full rounded-lg shadow-md"
+            ></div>
           </div>
-          <div className="lg:w-1/2 overflow-y-auto" style={{maxHeight: '600px'}}>
-            {dummyListings.map(listing => (
-              <ListingBesideMapCards
-                key={listing.id}
-                {...listing}
-              />
+          <div
+            className="lg:w-1/2 overflow-y-auto"
+            style={{ maxHeight: "600px" }}
+          >
+            {dummyListings.map((listing) => (
+              <ListingBesideMapCards key={listing.id} {...listing} />
             ))}
           </div>
         </div>
 
         {distance !== null && (
           <div className="mt-4 p-4 bg-white text-black rounded-lg shadow-lg">
-            <p><strong>Distance:</strong> {distance.toFixed(2)} km</p>
+            <p>
+              <strong>Distance:</strong> {distance.toFixed(2)} km
+            </p>
             <Button variant="solidm" onClick={clearRoute} className="mt-2">
               Clear Route
             </Button>
