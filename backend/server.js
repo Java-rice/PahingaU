@@ -83,7 +83,7 @@ app.post('/api/register/student', (req, res) => {
     }
 
     const query = `INSERT INTO students (fullName, email, university, socialStatus, phone, password, latitude, longitude) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     db.run(query, [fullName, email, university, socialStatus, phone, hashedPassword, latitude, longitude], function (err) {
       if (err) {
@@ -91,6 +91,7 @@ app.post('/api/register/student', (req, res) => {
       }
       res.json({ message: 'Student registered successfully', id: this.lastID });
     });
+
   });
 });
 
