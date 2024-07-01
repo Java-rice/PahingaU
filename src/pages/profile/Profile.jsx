@@ -6,7 +6,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/Home");
+    localStorage.removeItem('user'); // Clear user data from localStorage
+    navigate("/"); // Navigate to the home page
   };
 
   return (

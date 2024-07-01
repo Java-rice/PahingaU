@@ -17,6 +17,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@material/circular-progress": "^14.0.0",
+    "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@react-google-maps/api": "^2.19.3",
     "autoprefixer": "^10.4.19",
@@ -27,11 +28,8 @@
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-<<<<<<< HEAD
-=======
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
->>>>>>> 1511075e130ef615f729580640b346daa66a9751
     "mapbox-gl": "^3.4.0",
     "open-location-code": "^1.0.3",
     "react": "^18.2.0",
