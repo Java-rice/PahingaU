@@ -26,7 +26,7 @@ function createTables() {
     fullName TEXT,
     email TEXT UNIQUE,
     university TEXT,
-    socialStatus TEXT,
+    socialStatus TEXT, 
     phone TEXT,
     password TEXT,
     latitude REAL,

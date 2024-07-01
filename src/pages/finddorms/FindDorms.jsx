@@ -48,6 +48,7 @@ const FindDorms = () => {
         style: "mapbox://styles/mapbox/streets-v11",
         center: initialCenter,
         zoom: 15,
+        minZoom: 15,
       });
 
       mapInstance.addControl(new mapboxgl.NavigationControl());
@@ -70,7 +71,10 @@ const FindDorms = () => {
 
   useEffect(() => {
     if (map && fromInput && universityCoordinates[fromInput]) {
+      map.setMaxBounds(null);
+      map.setZoom(15);
       map.setCenter(universityCoordinates[fromInput]);
+      map.setMaxBounds(map.getBounds());
     }
   }, [fromInput, map]);
 
@@ -79,18 +83,6 @@ const FindDorms = () => {
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
     });
-
-    const response = await geocoder.query({ query: fromInput });
-    const coordinates =
-      response && response.features && response.features.length > 0
-        ? response.features[0].center
-        : null;
-
-    if (coordinates) {
-      map.setCenter(coordinates);
-    } else {
-      alert("Location not found");
-    }
   };
 
   const fetchRoute = async () => {
