@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import headerImage from "../../assets/profile_header.png";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('user') !== null);
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Clear user data from localStorage
-    navigate("/"); // Navigate to the home page
+    localStorage.removeItem('user');
+    setIsLoggedIn(false); 
+    navigate('/');
   };
 
   return (
