@@ -1,3 +1,4 @@
+// src/pages/howitworks/How.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import schedule from "../../assets/schedule.png";

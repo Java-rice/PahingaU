@@ -1,9 +1,9 @@
+// src/pages/register/StudentRegister.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import loginBG from "../../assets/loginBG.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 const StudentRegister = () => {
   const [form, setForm] = useState({
@@ -14,52 +14,52 @@ const StudentRegister = () => {
     phone: "",
     password: "",
     confirmPassword: "",
-    rentPrices: {
-      under1000: false,
-      under2000: false,
-      under3000: false,
-      under4000: false,
-    },
   });
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (type === "checkbox") {
-      setForm({
-        ...form,
-        rentPrices: {
-          ...form.rentPrices,
-          [name]: checked,
-        },
-      });
-    } else {
-      setForm({
-        ...form,
-        [name]: value,
-      });
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", form);
-    // Navigate to the success page after form submission
-    navigate("/success");
-  };
-
-  const handleRentPriceToggle = (price) => {
-    const updatedRentPrices = {
-      ...form.rentPrices,
-      [price]: !form.rentPrices[price],
-    };
+    const { name, value } = e.target;
     setForm({
       ...form,
-      rentPrices: updatedRentPrices,
+      [name]: value,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage(""); // Clear any previous error messages
+
+    if (form.password !== form.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/register/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        console.log("Student registered successfully");
+        navigate("/success");
+      } else {
+        const errorData = await response.json();
+        if (errorData.error.includes("UNIQUE constraint failed: students.email")) {
+          setErrorMessage("This email is already registered. Please use a different email.");
+        } else {
+          setErrorMessage("Registration failed: " + errorData.error);
+        }
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
@@ -144,44 +144,6 @@ const StudentRegister = () => {
                 />
               </div>
 
-              {/* Preferred Rent Prices */}
-              <div className="w-full px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Preferred Rent Prices</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
-                </label>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under1000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under1000")}
-                  >
-                    {"< $1000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under2000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under2000")}
-                  >
-                    {"< $2000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under3000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under3000")}
-                  >
-                    {"< $3000"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`py-2 px-4 border border-gray-300 rounded-lg ${form.rentPrices.under4000 ? "bg-[#0077B5] text-white" : "bg-transparent text-[#0077B5] hover:bg-[#0077B5] hover:text-white"}`}
-                    onClick={() => handleRentPriceToggle("under4000")}
-                  >
-                    {"< $4000"}
-                  </button>
-                </div>
-              </div>
-
               {/* Phone Number */}
               <div className="w-full px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
@@ -236,6 +198,12 @@ const StudentRegister = () => {
 
             </div>
 
+            {errorMessage && (
+              <div className="w-full px-4 mb-6 text-red-500 text-center">
+                {errorMessage}
+              </div>
+            )}
+
             {/* Register Button */}
             <button
               type="submit"
@@ -247,8 +215,8 @@ const StudentRegister = () => {
             {/* Not a student link */}
             <p className="text-[#404040] mb-4 text-center md:text-left">
               Not a student?{" "}
-              <Link to="/landlord-register" className="text-[#0077B5]">
-                Click here to register as a Landlord
+              <Link to="/landlord/register" className="text-[#0077B5]">
+                Register as a Landlord
               </Link>
             </p>
           </form>
@@ -259,3 +227,4 @@ const StudentRegister = () => {
 };
 
 export default StudentRegister;
+

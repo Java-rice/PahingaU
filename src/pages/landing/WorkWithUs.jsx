@@ -1,3 +1,4 @@
+// src/pages/landing/WorkWithUs.jsx
 import React from 'react';
 import PicCards from '../../components/cards/PicCards';
 import icon1 from '../../assets/Icon1.png';

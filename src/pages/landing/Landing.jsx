@@ -1,3 +1,4 @@
+//  src/pages/landing/Landing.jsx
 import React from 'react';
 import Hero from '../../components/hero/Hero'
 import FindDorms from './FindDorms'

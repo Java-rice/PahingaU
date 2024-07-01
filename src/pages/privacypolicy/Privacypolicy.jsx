@@ -1,3 +1,4 @@
+// src/pages/privacypolicy/Privacypolicy.jsx
 import React from "react";
 import { Button } from "../../components/buttons/Button";
 
