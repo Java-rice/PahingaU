@@ -344,7 +344,7 @@ const FindDorms = () => {
         </div>
 
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="mb-16 flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
            <div id="map" className="h-[600px] w-full rounded-lg shadow-md"></div>
           </div>
