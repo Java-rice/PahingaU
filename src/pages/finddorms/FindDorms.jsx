@@ -49,7 +49,7 @@ const FindDorms = () => {
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
         center: initialCenter,
-        zoom: 13,
+        zoom: 15,
       });
 
       mapInstance.addControl(new mapboxgl.NavigationControl());
