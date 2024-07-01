@@ -13,17 +13,43 @@ const FindDorms = () => {
   const [fromInput, setFromInput] = useState("");
   const [toInput, setToInput] = useState("");
   const [distance, setDistance] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const universityCoordinates = {
+    "Adamson University": [120.986, 14.6042],
+    "Ateneo de Manila University": [121.0777, 14.6407],
+    "De La Salle University": [120.9943, 14.5649],
+    "De La Salle-College of Saint Benilde": [120.9919, 14.5633],
+    "National University, Philippines": [120.9891, 14.6052],
+    "Polytechnic University of the Philippines": [121.0164, 14.5986],
+    "University of Santo Tomas": [120.9896, 14.6093],
+    "University of the Philippines Diliman": [121.0657, 14.6537],
+    "University of the Philippines Manila": [120.9918, 14.5806],
+    "University of the Philippines System": [121.0657, 14.6537], // Assuming UP Diliman as the main campus
+  };
 
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoicGVybWFya3kiLCJhIjoiY2x5MW5lNTJzMHRkczJrcHo2NmprZzMwbSJ9.3vlFP5qZY7YBVQcjul9GIg";
 
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setFromInput(parsedUser.university);
+    }
+
     const initializeMap = () => {
+      const initialCenter =
+        storedUser && universityCoordinates[JSON.parse(storedUser).university]
+          ? universityCoordinates[JSON.parse(storedUser).university]
+          : [121.774, 12.8797];
+
       const mapInstance = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
-        center: [121.774, 12.8797],
-        zoom: 6,
+        center: initialCenter,
+        zoom: 13,
       });
 
       mapInstance.addControl(new mapboxgl.NavigationControl());
@@ -43,8 +69,14 @@ const FindDorms = () => {
       initializeMap();
     }
 
-    return () => map && map.remove(); // Clean up the map instance
+    return () => map && map.remove();
   }, [map]);
+
+  useEffect(() => {
+    if (map && fromInput && universityCoordinates[fromInput]) {
+      map.setCenter(universityCoordinates[fromInput]);
+    }
+  }, [fromInput, map]);
 
   const handleMapClick = (e) => {
     setWaypoints((prevWaypoints) => [
@@ -64,7 +96,10 @@ const FindDorms = () => {
     });
 
     const response = await geocoder.query({ query: input });
-    const coordinates = response && response.features && response.features.length > 0 ? response.features[0].center : null;
+    const coordinates =
+      response && response.features && response.features.length > 0
+        ? response.features[0].center
+        : null;
 
     if (coordinates) {
       setWaypoints((prevWaypoints) => [
@@ -128,37 +163,53 @@ const FindDorms = () => {
     }
   };
 
+  const options = [
+    "Adamson University",
+    "Ateneo de Manila University",
+    "De La Salle University",
+    "De La Salle-College of Saint Benilde",
+    "National University, Philippines",
+    "Polytechnic University of the Philippines",
+    "University of Santo Tomas",
+    "University of the Philippines Diliman",
+    "University of the Philippines Manila",
+    "University of the Philippines System",
+  ];
+
   return (
     <div
       className="w-full font-poppins bg-cover min-h-screen bg-no-repeat bg-center"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="w-auto mx-auto py-[10%] text-white flex flex-col gap-5 justify-center items-center text-wrap">
+        <div className="text-center text-black">
+          <h1 className="text-2xl font-bold mb-4">Welcome to PahingaU!</h1>
+          {user && (
+            <>
+              <p className="text-xl">Logged in as: {user.email}</p>
+            </>
+          )}
+        </div>
         <div className="w-[60%] flex px-[2%] bg-[#FFFFFF] rounded-full py-[.2%] border border-[#E9E9E9] flex-row justify-center items-center">
-          
-          <input
-            type="text"
-            placeholder="Where do you want to stay?"
-            className="flex-grow px-4 py-2 text-xl text-[#1A1A1A] border rounded-full border-[#E9E9E9] focus:outline-none"
-            value={fromInput}
-            onChange={(e) => setFromInput(e.target.value)}
-          />
+          {user && (
+            <select
+              className="flex-grow px-4 py-2 text-xl text-[#1A1A1A] border rounded-full border-[#E9E9E9] focus:outline-none"
+              value={fromInput}
+              onChange={(e) => setFromInput(e.target.value)}
+            >
+              <option value="" disabled>
+                Select University
+              </option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             className="mx-2 text-[#1A1A1A] border rounded-full hover:bg-[#2196F3] border-[#E9E9E9] px-5 py-2 hover:text-gray-600"
             onClick={() => handleSetWaypointFromInput("from")}
-          >
-            <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
-          </button>
-          <input
-            type="text"
-            placeholder="Destination"
-            className="flex-grow px-4 py-2 text-xl text-[#1A1A1A] border rounded-full border-[#E9E9E9] focus:outline-none"
-            value={toInput}
-            onChange={(e) => setToInput(e.target.value)}
-          />
-          <button
-            className="mx-2 text-[#1A1A1A] border rounded-full hover:bg-[#2196F3] border-[#E9E9E9] px-5 py-2 hover:text-gray-600"
-            onClick={() => handleSetWaypointFromInput("to")}
           >
             <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
           </button>

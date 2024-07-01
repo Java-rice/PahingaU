@@ -1,4 +1,3 @@
-// src/pages/register/StudentRegister.jsx
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import loginBG from "../../assets/loginBG.png";
@@ -14,10 +13,43 @@ const StudentRegister = () => {
     phone: "",
     password: "",
     confirmPassword: "",
+    latitude: "",
+    longitude: "",
   });
 
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
   const navigate = useNavigate();
+
+  const universityCoordinates = {
+    "Adamson University": { latitude: 14.5895, longitude: 120.986 },
+    "Ateneo de Manila University": { latitude: 14.6394, longitude: 121.0782 },
+    "De La Salle University": { latitude: 14.5646, longitude: 120.9936 },
+    "De La Salle-College of Saint Benilde": {
+      latitude: 14.5634,
+      longitude: 120.9942,
+    },
+    "National University, Philippines": {
+      latitude: 14.6047,
+      longitude: 120.9851,
+    },
+    "Polytechnic University of the Philippines": {
+      latitude: 14.5965,
+      longitude: 120.9832,
+    },
+    "University of Santo Tomas": { latitude: 14.609, longitude: 120.9891 },
+    "University of the Philippines Diliman": {
+      latitude: 14.6537,
+      longitude: 121.0687,
+    },
+    "University of the Philippines Manila": {
+      latitude: 14.58,
+      longitude: 120.9862,
+    },
+    "University of the Philippines System": {
+      latitude: 14.6537,
+      longitude: 121.0687,
+    },
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +57,19 @@ const StudentRegister = () => {
       ...form,
       [name]: value,
     });
+
+    if (name === "university") {
+      const { latitude, longitude } = universityCoordinates[value] || {
+        latitude: "",
+        longitude: "",
+      };
+      setForm({
+        ...form,
+        university: value,
+        latitude,
+        longitude,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -37,21 +82,28 @@ const StudentRegister = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/register/student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/register/student",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
 
       if (response.ok) {
         console.log("Student registered successfully");
         navigate("/success");
       } else {
         const errorData = await response.json();
-        if (errorData.error.includes("UNIQUE constraint failed: students.email")) {
-          setErrorMessage("This email is already registered. Please use a different email.");
+        if (
+          errorData.error.includes("UNIQUE constraint failed: students.email")
+        ) {
+          setErrorMessage(
+            "This email is already registered. Please use a different email."
+          );
         } else {
           setErrorMessage("Registration failed: " + errorData.error);
         }
@@ -62,25 +114,55 @@ const StudentRegister = () => {
     }
   };
 
+  const universities = [
+    "Adamson University",
+    "Ateneo de Manila University",
+    "De La Salle University",
+    "De La Salle-College of Saint Benilde",
+    "National University, Philippines",
+    "Polytechnic University of the Philippines",
+    "University of Santo Tomas",
+    "University of the Philippines Diliman",
+    "University of the Philippines Manila",
+    "University of the Philippines System",
+  ];
+
   return (
     <>
-      <div className="flex items-center font-montserrat justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${loginBG})` }}>
+      <div
+        className="flex items-center font-montserrat justify-center min-h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${loginBG})` }}
+      >
         <div className="w-full md:w-3/5 h-auto m-5 md:m-[5%] bg-white bg-opacity-80 gap-4 backdrop-blur-md rounded-lg p-5 md:p-[5%] shadow-md flex flex-col">
           <h1 className="text-center md:text-left">
-            <span className="text-3xl font-bold mb-3 text-[#0077B5]">Student </span>
-            <span className="text-3xl text-[#000000] font-bold mb-3">Registration</span>
+            <span className="text-3xl font-bold mb-3 text-[#0077B5]">
+              Student{" "}
+            </span>
+            <span className="text-3xl text-[#000000] font-bold mb-3">
+              Registration
+            </span>
           </h1>
           <p className="text-[#404040] mb-4">
-            We need you to help us with some basic information for your account creation. Here are our <a href="#" className="text-[#0077B5]">terms and conditions</a>. Please read them carefully. We are GDPR compliant
+            We need you to help us with some basic information for your account
+            creation. Here are our{" "}
+            <a href="#" className="text-[#0077B5]">
+              terms and conditions
+            </a>
+            . Please read them carefully. We are GDPR compliant
           </p>
-          <form className="w-full flex flex-col items-center" onSubmit={handleSubmit}>
-
+          <form
+            className="w-full flex flex-col items-center"
+            onSubmit={handleSubmit}
+          >
             {/* Full Name */}
             <div className="flex flex-wrap">
               <div className="w-full md:w-1/2 px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                   <span>Full Name</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className="ml-2 text-gray-500 text-sm cursor-pointer"
+                  />
                 </label>
                 <input
                   type="text"
@@ -97,7 +179,10 @@ const StudentRegister = () => {
               <div className="w-full md:w-1/2 px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                   <span>Email</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className="ml-2 text-gray-500 text-sm cursor-pointer"
+                  />
                 </label>
                 <input
                   type="email"
@@ -114,24 +199,37 @@ const StudentRegister = () => {
               <div className="w-full md:w-1/2 px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                   <span>University</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className="ml-2 text-gray-500 text-sm cursor-pointer"
+                  />
                 </label>
-                <input
-                  type="text"
+                <select
                   name="university"
-                  placeholder="University"
                   className="w-full py-2 px-3 border border-gray-300 rounded-lg"
                   value={form.university}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="" disabled>
+                    Select University
+                  </option>
+                  {universities.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Social Status */}
               <div className="w-full md:w-1/2 px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                   <span>Social Status</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className="ml-2 text-gray-500 text-sm cursor-pointer"
+                  />
                 </label>
                 <input
                   type="text"
@@ -148,7 +246,10 @@ const StudentRegister = () => {
               <div className="w-full px-4 mb-6">
                 <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                   <span>Phone Number</span>
-                  <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className="ml-2 text-gray-500 text-sm cursor-pointer"
+                  />
                 </label>
                 <input
                   type="tel"
@@ -167,7 +268,10 @@ const StudentRegister = () => {
                 <div className="w-full md:w-1/2 md:pr-2 mb-6">
                   <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                     <span>Password</span>
-                    <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                    <FontAwesomeIcon
+                      icon={faQuestionCircle}
+                      className="ml-2 text-gray-500 text-sm cursor-pointer"
+                    />
                   </label>
                   <input
                     type="password"
@@ -182,7 +286,10 @@ const StudentRegister = () => {
                 <div className="w-full md:w-1/2 md:pl-2 mb-6">
                   <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
                     <span>Confirm Password</span>
-                    <FontAwesomeIcon icon={faQuestionCircle} className="ml-2 text-gray-500 text-sm cursor-pointer" />
+                    <FontAwesomeIcon
+                      icon={faQuestionCircle}
+                      className="ml-2 text-gray-500 text-sm cursor-pointer"
+                    />
                   </label>
                   <input
                     type="password"
@@ -195,7 +302,6 @@ const StudentRegister = () => {
                   />
                 </div>
               </div>
-
             </div>
 
             {errorMessage && (
@@ -227,4 +333,3 @@ const StudentRegister = () => {
 };
 
 export default StudentRegister;
-
