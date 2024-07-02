@@ -28,10 +28,16 @@ function createTables() {
     university TEXT,
     socialStatus TEXT, 
     phone TEXT,
-    password TEXT,
-    latitude REAL,
-    longitude REAL
-  )`);
+    password TEXT
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating students table:', err.message);
+    } else {
+      // Add latitude and longitude columns if they do not exist
+      db.run(`ALTER TABLE students ADD COLUMN latitude REAL`);
+      db.run(`ALTER TABLE students ADD COLUMN longitude REAL`);
+    }
+  });
 
   db.run(`CREATE TABLE IF NOT EXISTS landlords (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,6 +64,7 @@ function createTables() {
     FOREIGN KEY (landlordId) REFERENCES landlords(id)
   )`);
 }
+
 
 // University coordinates
 const universityCoordinates = {
