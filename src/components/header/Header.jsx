@@ -52,6 +52,19 @@ const Header = () => {
     navigate('/');
   };
 
+  const handleClick = () => {
+    setClicked(!clicked);
+  };
+
+  const handleFindDormsClick = () => {
+    // Optionally add any logic before navigating to FindDorms
+    // For example, you might want to clear local state related to the map
+    // or perform other actions.
+
+    // Example: navigate to the FindDorms page
+    navigate('/FindDorms');
+  };
+
   return (
     <>
       <nav
@@ -112,11 +125,12 @@ const Header = () => {
                   to={isLoggedIn ? "/FindDorms" : "/Login"}
                   activeClassName="text-[#0077B5]"
                   className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                  onClick={handleFindDormsClick} // Handle FindDorms click
                 >
                   Find Dorms
                 </NavLink>
               </li>
-              {isLandlord && ( // Display "Post Property" only if user is a landlord
+              {isLandlord && (
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
                     to="/PostProperty"
@@ -147,6 +161,14 @@ const Header = () => {
                       Profile
                       <AccountCircleIcon className="ml-1" />
                     </NavLink>
+                  </li>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <button
+                      onClick={handleLogout}
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Logout
+                    </button>
                   </li>
                 </>
               ) : (
@@ -198,11 +220,12 @@ const Header = () => {
                     to={isLoggedIn ? "/FindDorms" : "/Login"}
                     activeClassName="text-[#0077B5]"
                     className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    onClick={handleFindDormsClick} // Handle FindDorms click
                   >
                     Find Dorms
                   </NavLink>
                 </li>
-                {isLandlord && ( // Display "Post Property" only if user is a landlord
+                {isLandlord && (
                   <li className="text-base font-bold font-sans cursor-pointer">
                     <NavLink
                       to="/PostProperty"
@@ -234,6 +257,14 @@ const Header = () => {
                         <AccountCircleIcon className="ml-1" />
                       </NavLink>
                     </li>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <button
+                        onClick={handleLogout}
+                        className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                      >
+                        Logout
+                      </button>
+                    </li>
                   </>
                 ) : (
                   <>
@@ -258,7 +289,6 @@ const Header = () => {
           </div>
         )}
       </nav>
-      <div className="mt-20"></div>
     </>
   );
 };
