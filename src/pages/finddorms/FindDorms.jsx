@@ -171,7 +171,7 @@ const FindDorms = () => {
       reviews: 318,
     },
     {
-      id: 2,
+      id: 3,
       image: elpueblo,
       title: "El Pueblo Condo For Rent",
       details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
@@ -180,7 +180,7 @@ const FindDorms = () => {
       reviews: 318,
     },
     {
-      id: 2,
+      id: 4,
       image: elpueblo,
       title: "El Pueblo Condo For Rent",
       details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
@@ -189,7 +189,7 @@ const FindDorms = () => {
       reviews: 318,
     },
     {
-      id: 2,
+      id: 5,
       image: elpueblo,
       title: "El Pueblo Condo For Rent",
       details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
@@ -201,7 +201,7 @@ const FindDorms = () => {
   ];
 
   return (
-    <div className="w-full font-poppins bg-blue-50 min-h-screen">
+    <div className="w-full font-poppins pt-[10%] bg-blue-50 min-h-screen">
       <main className="max-w-7xl mx-auto py-8 px-4">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-2">Welcome to PahingaU!</h2>

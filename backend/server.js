@@ -28,10 +28,16 @@ function createTables() {
     university TEXT,
     socialStatus TEXT, 
     phone TEXT,
-    password TEXT,
-    latitude REAL,
-    longitude REAL
-  )`);
+    password TEXT
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating students table:', err.message);
+    } else {
+      // Add latitude and longitude columns if they do not exist
+      db.run(`ALTER TABLE students ADD COLUMN latitude REAL`);
+      db.run(`ALTER TABLE students ADD COLUMN longitude REAL`);
+    }
+  });
 
   db.run(`CREATE TABLE IF NOT EXISTS landlords (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,9 +60,11 @@ function createTables() {
     accommodationType TEXT,
     amenities TEXT,
     price REAL,
+    slot INTEGER,
     FOREIGN KEY (landlordId) REFERENCES landlords(id)
   )`);
 }
+
 
 // University coordinates
 const universityCoordinates = {
@@ -154,17 +162,17 @@ app.post('/api/housing/add', (req, res) => {
   const {
     landlordId, latitude, longitude, address, image,
     description, housingType, leasingOption, accommodationType,
-    amenities, price
+    amenities, price, slot
   } = req.body;
 
   const query = `INSERT INTO housing (
     landlordId, latitude, longitude, address, image, description,
-    housingType, leasingOption, accommodationType, amenities, price
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    housingType, leasingOption, accommodationType, amenities, price, slot
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.run(query, [
     landlordId, latitude, longitude, address, image, description,
-    housingType, leasingOption, accommodationType, amenities, price
+    housingType, leasingOption, accommodationType, amenities, price, slot
   ], function (err) {
     if (err) {
       return res.status(400).json({ error: err.message });
