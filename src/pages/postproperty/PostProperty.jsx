@@ -24,8 +24,10 @@ const PostProperty = () => {
           </h1>
         </div>
       </div>
-      <div className="bg-white mx-[10%] p-[5%] mb-[10%] rounded-lg shadow-md"
-         style={{ boxShadow: '17px 8px 40.8px 6px #00000040' }}>
+      <div
+        className="bg-white mx-[10%] p-[5%] mb-[10%] rounded-lg shadow-md"
+        style={{ boxShadow: "17px 8px 40.8px 6px #00000040" }}
+      >
         {/* Property Details */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-[#0077B5] mb-4">
@@ -84,9 +86,7 @@ const PostProperty = () => {
         </div>
         {/* Persons */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">
-            Persons
-          </h2>
+          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">Persons</h2>
           <label className="block mb-2 text-gray-700">Min Persons</label>
           <input
             className="w-full border border-gray-300 p-2 rounded mb-4"
@@ -123,7 +123,9 @@ const PostProperty = () => {
         </div>
         {/* Bedrooms */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">Bedrooms</h2>
+          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">
+            Bedrooms
+          </h2>
           <label className="block mb-2 text-gray-700">Number of Bedrooms</label>
           <input
             className="w-full border border-gray-300 p-2 rounded mb-4"
@@ -152,7 +154,9 @@ const PostProperty = () => {
         </div>
         {/* Bathroom */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">Bathroom</h2>
+          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">
+            Bathroom
+          </h2>
           <div className="flex space-x-4">
             {["Shared", "Own"].map((bathroom) => (
               <button
@@ -214,7 +218,9 @@ const PostProperty = () => {
         </div>
         {/* Upload Photos */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">Upload Photos</h2>
+          <h2 className="text-xl font-semibold text-[#0077B5] mb-4">
+            Upload Photos
+          </h2>
           <div className="border-dashed border-2 border-gray-300 p-8 text-center rounded-lg">
             <p className="text-gray-600">Drop your media here</p>
             <input type="file" multiple className="hidden" />
@@ -238,7 +244,9 @@ const PostProperty = () => {
         </div>
         {/* Submit Button */}
         <div className="text-center">
-          <button className="bg-[#0077B5] text-white p-3 rounded">Submit</button>
+          <button className="bg-[#0077B5] text-white p-3 rounded">
+            Submit
+          </button>
         </div>
       </div>
     </>
