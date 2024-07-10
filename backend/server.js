@@ -32,10 +32,6 @@ function createTables() {
   )`, (err) => {
     if (err) {
       console.error('Error creating students table:', err.message);
-    } else {
-      // Add latitude and longitude columns if they do not exist
-      db.run(`ALTER TABLE students ADD COLUMN latitude REAL`);
-      db.run(`ALTER TABLE students ADD COLUMN longitude REAL`);
     }
   });
 
