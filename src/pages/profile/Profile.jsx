@@ -76,7 +76,7 @@ const Profile = () => {
             </button>
             {user && (
               <h1 className="text-xl font-semibold mt-4">
-                Welcome, {user.fullName} !
+                Welcome, {user.fullName}
               </h1>
             )}
           </div>
