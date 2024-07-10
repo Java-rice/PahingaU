@@ -1,119 +1,87 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import loginBG from "../../assets/loginBG.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
-const StudentRegister = () => {
+import backgroundImage from "../../assets/backgroundRegister.png";
+
+const Register = () => {
   const [form, setForm] = useState({
     fullName: "",
     email: "",
     university: "",
     socialStatus: "",
-    phone: "",
+    phoneNumber: "",
+    username: "",
     password: "",
     confirmPassword: "",
-    latitude: "",
-    longitude: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [touched, setTouched] = useState({});
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
   const navigate = useNavigate();
-
-  const universityCoordinates = {
-    "Adamson University": { latitude: 14.5895, longitude: 120.986 },
-    "Ateneo de Manila University": { latitude: 14.6394, longitude: 121.0782 },
-    "De La Salle University": { latitude: 14.5648, longitude: 120.9932 },
-    "De La Salle-College of Saint Benilde": {
-      latitude: 14.5636,
-      longitude: 120.9951,
-    },
-    "National University, Philippines": {
-      latitude: 14.6043,
-      longitude: 120.9946,
-    },
-    "Polytechnic University of the Philippines": {
-      latitude: 14.5979,
-      longitude: 121.0108,
-    },
-    "University of Santo Tomas": { latitude: 14.609, longitude: 120.9891 },
-    "University of the Philippines Diliman": {
-      latitude: 14.6537,
-      longitude: 121.0687,
-    },
-    "University of the Philippines Manila": {
-      latitude: 14.58,
-      longitude: 120.9862,
-    },
-    "University of the Philippines System": {
-      latitude: 14.6537,
-      longitude: 121.0687,
-    },
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({
-      ...form,
+    setForm((prevForm) => ({
+      ...prevForm,
       [name]: value,
-    });
-
-    if (name === "university") {
-      const { latitude, longitude } = universityCoordinates[value] || {
-        latitude: "",
-        longitude: "",
-      };
-      setForm({
-        ...form,
-        university: value,
-        latitude,
-        longitude,
-      });
-    }
+    }));
+    setTouched((prevTouched) => ({
+      ...prevTouched,
+      [name]: true,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Clear any previous error messages
 
-    if (form.password !== form.confirmPassword) {
-      setErrorMessage("Passwords do not match");
-      return;
-    }
+    const allFieldsFilled = Object.keys(form).every((key) => form[key]);
+    const passwordsMatch = form.password === form.confirmPassword;
 
-    try {
-      const response = await fetch(
-        "http://localhost:3001/api/register/student",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
+    if (!allFieldsFilled || !passwordsMatch) {
+      setShowTooltip(true);
+      setPasswordMismatch(!passwordsMatch);
+    } else {
+      setShowTooltip(false);
+      setPasswordMismatch(false);
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/register",
+          form
+        );
+        if (response.data.message === "User registered successfully") {
+          navigate("/success");
         }
-      );
-
-      if (response.ok) {
-        console.log("Student registered successfully");
-        navigate("/success");
-      } else {
-        const errorData = await response.json();
-        if (
-          errorData.error.includes("UNIQUE constraint failed: students.email")
-        ) {
-          setErrorMessage(
-            "This email is already registered. Please use a different email."
-          );
-        } else {
-          setErrorMessage("Registration failed: " + errorData.error);
-        }
+      } catch (error) {
+        console.error("There was an error registering!", error);
       }
-    } catch (error) {
-      console.error("Error during registration:", error);
-      setErrorMessage("An unexpected error occurred. Please try again.");
     }
   };
 
+  const renderTooltip = (field) => {
+    return showTooltip && !form[field] && touched[field] ? (
+      <span className="required-tooltip active">
+        <FontAwesomeIcon
+          icon={faQuestionCircle}
+          className="text-gray-500 text-sm cursor-pointer"
+        />
+        <span className="tooltip-text"></span>
+      </span>
+    ) : (
+      <span className="required-tooltip">
+        <FontAwesomeIcon
+          icon={faQuestionCircle}
+          className="text-gray-500 text-sm cursor-pointer"
+        />
+        <span className="tooltip-text"></span>
+      </span>
+    );
+  };
+
+  // University options from StudentRegister component
   const universities = [
     "Adamson University",
     "Ateneo de Manila University",
@@ -128,208 +96,171 @@ const StudentRegister = () => {
   ];
 
   return (
-    <>
-      <div
-        className="flex items-center font-montserrat justify-center min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: `url(${loginBG})` }}
-      >
-        <div className="w-full md:w-3/5 h-auto m-5 md:m-[5%] bg-white bg-opacity-80 gap-4 backdrop-blur-md rounded-lg p-5 md:p-[5%] shadow-md flex flex-col">
-          <h1 className="text-center md:text-left">
-            <span className="text-3xl font-bold mb-3 text-[#0077B5]">
-              Student{" "}
-            </span>
-            <span className="text-3xl text-[#000000] font-bold mb-3">
-              Registration
-            </span>
-          </h1>
-          <p className="text-[#404040] mb-4">
-            We need you to help us with some basic information for your account
-            creation. Here are our{" "}
-            <a href="#" className="text-[#0077B5]">
-              terms and conditions
-            </a>
-            . Please read them carefully. We are GDPR compliant
-          </p>
-          <form
-            className="w-full flex flex-col items-center"
-            onSubmit={handleSubmit}
-          >
-            {/* Full Name */}
-            <div className="flex flex-wrap">
-              <div className="w-full md:w-1/2 px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Full Name</span>
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className="ml-2 text-gray-500 text-sm cursor-pointer"
-                  />
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Full Name"
-                  className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  value={form.fullName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+    <div className="flex flex-col md:flex-row">
+      <div className="md:w-1/2 bg-white p-10">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Input your information
+        </h1>
+        <p className="text-sm text-gray-600 mt-2">
+          We need you to help us with some basic information for your account
+          creation. Here are our{" "}
+          <span className="text-blue-600">terms and conditions</span>. Please
+          read them carefully. We are GDPR compliant.
+        </p>
 
-              {/* Email */}
-              <div className="w-full md:w-1/2 px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Email</span>
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className="ml-2 text-gray-500 text-sm cursor-pointer"
-                  />
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* University */}
-              <div className="w-full md:w-1/2 px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>University</span>
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className="ml-2 text-gray-500 text-sm cursor-pointer"
-                  />
-                </label>
-                <select
-                  name="university"
-                  className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  value={form.university}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>
-                    Select University
-                  </option>
-                  {universities.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Social Status */}
-              <div className="w-full md:w-1/2 px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Social Status</span>
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className="ml-2 text-gray-500 text-sm cursor-pointer"
-                  />
-                </label>
-                <input
-                  type="text"
-                  name="socialStatus"
-                  placeholder="Social Status"
-                  className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  value={form.socialStatus}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div className="w-full px-4 mb-6">
-                <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                  <span>Phone Number</span>
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className="ml-2 text-gray-500 text-sm cursor-pointer"
-                  />
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                  pattern="[0-9]{11}"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Password and Confirm Password */}
-              <div className="flex flex-wrap w-full px-4 mb-6">
-                <div className="w-full md:w-1/2 md:pr-2 mb-6">
-                  <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                    <span>Password</span>
-                    <FontAwesomeIcon
-                      icon={faQuestionCircle}
-                      className="ml-2 text-gray-500 text-sm cursor-pointer"
-                    />
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                    value={form.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="w-full md:w-1/2 md:pl-2 mb-6">
-                  <label className="flex items-center justify-between text-[#1A1A1A] text-sm font-regular mb-2">
-                    <span>Confirm Password</span>
-                    <FontAwesomeIcon
-                      icon={faQuestionCircle}
-                      className="ml-2 text-gray-500 text-sm cursor-pointer"
-                    />
-                  </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    className="w-full py-2 px-3 border border-gray-300 rounded-lg"
-                    value={form.confirmPassword}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="flex flex-col md:flex-row mb-4">
+            <div className="w-full md:w-1/2 pr-0 md:pr-3 mb-4 md:mb-0">
+              <label className="block mb-1">
+                <span>Full Name {renderTooltip("fullName")}</span>
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.fullName}
+                onChange={handleChange}
+                required
+              />
             </div>
+            <div className="w-full md:w-1/2 pl-0 md:pl-3">
+              <label className="block mb-1">
+                Email {renderTooltip("email")}
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-            {errorMessage && (
-              <div className="w-full px-4 mb-6 text-red-500 text-center">
-                {errorMessage}
-              </div>
-            )}
+          <div className="flex flex-col md:flex-row mb-4">
+            <div className="w-full md:w-1/2 pr-0 md:pr-3 mb-4 md:mb-0">
+              <label className="block mb-1">
+                University {renderTooltip("university")}
+              </label>
+              <select
+                name="university"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.university}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>
+                  Select University
+                </option>
+                {universities.map((uni, index) => (
+                  <option key={index} value={uni}>
+                    {uni}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="w-full md:w-1/2 pl-0 md:pl-3">
+              <label className="block mb-1">
+                Social Status {renderTooltip("socialStatus")}
+              </label>
+              <input
+                type="text"
+                name="socialStatus"
+                placeholder="Your Social Status"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.socialStatus}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-            {/* Register Button */}
+          <div className="flex flex-col md:flex-row mb-4">
+            <div className="w-full md:w-1/2 pr-0 md:pr-3 mb-4 md:mb-0">
+              <label className="block mb-1">
+                Phone Number {renderTooltip("phoneNumber")}
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                placeholder="+63 999 999 9999"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                pattern="[0-9]{11}"
+                value={form.phoneNumber}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2 pl-0 md:pl-3">
+              <label className="block mb-1">
+                Username {renderTooltip("username")}
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row mb-4">
+            <div className="w-full md:w-1/2 pr-0 md:pr-3 mb-4 md:mb-0">
+              <label className="block mb-1">
+                Password {renderTooltip("password")}
+              </label>
+              <input
+                type="password"
+                name="password"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2 pl-0 md:pl-3">
+              <label className="block mb-1">
+                Confirm Password {renderTooltip("confirmPassword")}
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              {passwordMismatch && touched.confirmPassword && (
+                <span className="text-red-500 text-xs">
+                  Passwords do not match.
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-end">
             <button
               type="submit"
-              className="my-4 px-10 py-3 rounded-full bg-[#0077B5] text-white shadow-lg"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
             >
               Register
             </button>
-
-            {/* Not a student link */}
-            <p className="text-[#404040] mb-4 text-center md:text-left">
-              Not a student?{" "}
-              <Link to="/landlord-register" className="text-[#0077B5]">
-                Register as a Landlord
-              </Link>
-            </p>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    </>
+
+      <div
+        className="md:w-1/2 bg-cover bg-center h-64 md:h-auto"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      ></div>
+    </div>
   );
 };
 
-export default StudentRegister;
+export default Register;
