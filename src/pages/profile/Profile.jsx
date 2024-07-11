@@ -43,19 +43,19 @@ const Profile = () => {
               </NavLink>
             </li>
             <li className="menu-item">
-              <NavLink to="visits" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to="VisitSection" className={({ isActive }) => (isActive ? "active" : "")}>
                 <span className="material-icons">event</span>
                 <span>Visits</span>
               </NavLink>
             </li>
             <li className="menu-item">
-              <NavLink to="to-review" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to="ToReviewSection" className={({ isActive }) => (isActive ? "active" : "")}>
                 <span className="material-icons">rate_review</span>
                 <span>To Review</span>
               </NavLink>
             </li>
             <li className="menu-item">
-              <NavLink to="security" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to="SecuritySection" className={({ isActive }) => (isActive ? "active" : "")}>
                 <span className="material-icons">security</span>
                 <span>Security</span>
               </NavLink>
