@@ -85,6 +85,41 @@ const universityCoordinates = {
   "University of the Philippines System": { latitude: 14.6537, longitude: 121.0687 }
 };
 
+
+// Create universities table and insert predefined coordinates
+
+const universityCoordinates = {
+  "Adamson University": [120.986, 14.6042],
+  "Ateneo de Manila University": [121.0777, 14.6407],
+  "De La Salle University": [120.9932, 14.5648],
+  "De La Salle-College of Saint Benilde": [120.9951, 14.5636],
+  "National University, Philippines": [120.9946, 14.6043],
+  "Polytechnic University of the Philippines": [121.0108, 14.5979],
+  "University of Santo Tomas": [120.9896, 14.6093],
+  "University of the Philippines Diliman": [121.0657, 14.6537],
+  "University of the Philippines Manila": [120.9918, 14.5806],
+  "University of the Philippines System": [121.0657, 14.6537]
+};
+
+const insertUniversityQuery = `
+    INSERT INTO universities (name, latitude, longitude)
+    VALUES (?, ?, ?)
+  `;
+
+for (const [name, coords] of Object.entries(universityCoordinates)) {
+  db.run(insertUniversityQuery, [name, coords[1], coords[0]], function (err) {
+    if (err && err.message.includes('SQLITE_CONSTRAINT')) {
+      // The university already exists, no need to insert again
+      console.log(`University ${name} already exists`);
+      return;
+    } else if (err) {
+      console.error(`Error inserting university ${name}:`, err.message);
+    } else {
+      console.log(`University ${name} inserted`);
+    }
+  });
+}
+
 // Student registration endpoint
 app.post('/api/register/student', (req, res) => {
   const { fullName, email, university, socialStatus, phone, password } = req.body;
@@ -131,71 +166,6 @@ app.post('/api/register/landlord', (req, res) => {
     });
   });
 });
-
-// Search users endpoint
-app.get('/api/users/search', (req, res) => {
-  const { query } = req.query;
-
-  const searchQuery = `
-    SELECT id, fullName, email
-    FROM students
-    WHERE fullName LIKE '%' || ? || '%' 
-    UNION 
-    SELECT id, fullName, email
-    FROM landlords
-    WHERE fullName LIKE '%' || ? || '%'
-  `;
-
-  db.all(searchQuery, [query, query], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ users: rows });
-  });
-});
-
-
-// Search messages endpoint
-app.get('/api/messages/:chatId/:isLandlord', (req, res) => {
-  const { chatId, isLandlord } = req.params;
-  const senderTable = isLandlord === 'true' ? 'landlords' : 'students';
-  const receiverTable = isLandlord === 'true' ? 'students' : 'landlords';
-
-  const searchQuery = `
-    SELECT messages.*, senders.fullName AS senderName, receivers.fullName AS receiverName
-    FROM messages
-    JOIN ${senderTable} AS senders ON messages.senderId = senders.id
-    JOIN ${receiverTable} AS receivers ON messages.receiverId = receivers.id
-    WHERE (senders.id = ? OR receivers.id = ?)
-    ORDER BY timestamp;
-  `;
-
-  db.all(searchQuery, [chatId, chatId], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ messages: rows });
-  });
-});
-
-
-
-// Send message endpoint
-app.post('/api/messages/send', (req, res) => {
-  const { senderId, receiverId, message, isLandlordSender } = req.body;
-  const senderTable = isLandlordSender ? 'landlords' : 'students';
-  const receiverTable = isLandlordSender ? 'students' : 'landlords';
-
-  // Insert message
-  const insertQuery = `INSERT INTO messages (senderId, receiverId, message) VALUES (?, ?, ?)`;
-  db.run(insertQuery, [senderId, receiverId, message], function(err) {
-    if (err) {
-      return res.status(400).json({ error: err.message });
-    }
-    res.json({ message: 'Message sent successfully', id: this.lastID });
-  });
-});
-
 
 // Login endpoint
 app.post('/api/login', (req, res) => {
@@ -251,15 +221,41 @@ app.post('/api/housing/add', (req, res) => {
   });
 });
 
-// Get all housing entries
 app.get('/api/housing', (req, res) => {
-  const query = `SELECT * FROM housing`;
-
-  db.all(query, [], (err, rows) => {
+  const query = `
+    SELECT id, image, title, details, price, rating, reviews, latitude, longitude FROM housing
+  `;
+  db.all(query, (err, rows) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.json({ housing: rows });
+    res.json(rows); // Send housing data as JSON response
+  });
+});
+
+// Endpoint to fetch all users
+app.get('/api/users', (req, res) => {
+  const query = `
+    SELECT id, fullName, email, university, socialStatus, phoneNumber, username FROM users
+  `;
+  db.all(query, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows); // Send users data as JSON response
+  });
+});
+
+// Endpoint to fetch all universities
+app.get('/api/universities', (req, res) => {
+  const query = `
+    SELECT name, latitude, longitude FROM universities
+  `;
+  db.all(query, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows); // Send universities data as JSON response
   });
 });
 
