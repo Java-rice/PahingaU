@@ -25,47 +25,88 @@ const Profile = () => {
     window.location.reload();
   };
 
+  const renderMenuItems = () => {
+    if (user?.university) {
+      // User is a renter
+      return (
+        <>
+          <li className="menu-item">
+            <NavLink to="ProfileSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">person</span>
+              <span>Profile</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="MessageSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">message</span>
+              <span>Messages</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="BookmarksSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">bookmark</span>
+              <span>Bookmarks</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="VisitSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">event</span>
+              <span>Visits</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="ToReviewSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">rate_review</span>
+              <span>To Review</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="SecuritySection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">security</span>
+              <span>Security</span>
+            </NavLink>
+          </li>
+        </>
+      );
+    } else {
+      // User is a landlord
+      return (
+        <>
+          <li className="menu-item">
+            <NavLink to="HomePageSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">home</span>
+              <span>Homepage</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="ProfileSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">person</span>
+              <span>Profile</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="ManageListingSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">list</span>
+              <span>Manage Listings</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink to="MessageSection" className={({ isActive }) => (isActive ? "active" : "")}>
+              <span className="material-icons">message</span>
+              <span>Messages</span>
+            </NavLink>
+          </li>
+        </>
+      );
+    }
+  };
+
   return (
     <div className="profile">
       <div className="profile-container">
         <div className="sidebar">
           <ul className="menu">
-            <li className="menu-item">
-              <NavLink to="ProfileSection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">person</span>
-                <span>Profile</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink to="BookmarksSection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">bookmark</span>
-                <span>Bookmarks</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink to="VisitSection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">event</span>
-                <span>Visits</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink to="ToReviewSection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">rate_review</span>
-                <span>To Review</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink to="SecuritySection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">security</span>
-                <span>Security</span>
-              </NavLink>
-            </li>
-            <li className="menu-item">
-              <NavLink to="MessageSection" className={({ isActive }) => (isActive ? "active" : "")}>
-                <span className="material-icons">message</span>
-                <span>Messages</span>
-              </NavLink>
-            </li>
+            {renderMenuItems()}
             <li className="menu-item" onClick={handleLogout}>
               <span className="material-icons">logout</span>
               <span>Logout</span>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SecurityContent = () => {
+const SecurityContent = ({ user }) => {
   return (
     <div>
       
