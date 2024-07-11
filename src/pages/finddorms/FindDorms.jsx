@@ -49,6 +49,7 @@ const FindDorms = () => {
       map.setZoom(13);
       marker.setLngLat(newCenter);
       map.setCenter(newCenter);
+      map.setMaxBounds(map.getBounds());
     }
   }, [fromInput, map, universities, marker]);
 
