@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Database files
-database.sqlite
+./backend/database.sqlite
