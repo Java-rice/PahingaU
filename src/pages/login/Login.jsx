@@ -47,10 +47,17 @@ const Login = () => {
           isLandlord,
         });
         if (response.data.message === "Login successful") {
-          const userData = { ...response.data.user, isLandlord }; // Combine user data with isLandlord flag
+          const userData = { ...response.data.user, isLandlord };
           localStorage.setItem("user", JSON.stringify(userData));
           console.log("User data stored in localStorage:", userData);
-          navigate("/FindDorms");
+          
+          // Navigate to different pages based on isLandlord
+          if (isLandlord) {
+            navigate("/LandlordHome");
+          } else {
+            navigate("/FindDorms");
+          }
+          
           window.location.reload();
         }
       } catch (error) {
