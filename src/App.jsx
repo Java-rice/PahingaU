@@ -20,6 +20,7 @@ import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
 import Profile from "./pages/profile/Profile";
 import FindDorms from "./pages/finddorms/FindDorms";
 import PostProperty from "./pages/postproperty/PostProperty"
+
 import "./App.css";
 
 const App = () => {
