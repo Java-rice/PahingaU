@@ -23,12 +23,22 @@ const MessageSection = ({ user }) => {
   const initialChatMessages = {
     1: [
       { text: "Hi po! Ask ko lang kung meron po bang heater yung shower niyo po", senderId: 1, time: "04:45 PM" },
-      { text: "Hello! Yes po meron po :)", senderId: 0, time: "04:46 PM" }
+      { text: "Hello! Yes po meron po :)", senderId: 0, time: "04:46 PM" },
+      { text: "Hala buti naman po. Nilalamig po kasi ako maligo hehe", senderId: 1, time: "04:45 PM" },
+      { text: "Pwede niyo po ma-visit yung room set lang po kayo ng schedule sa amin", senderId: 0, time: "04:45 PM" },
     ],
-    2: [],
-    3: [],
-    4: [],
-    5: []
+    2: [
+      { text: "Is the apartment still available?", senderId: 2, time: "05:30 PM" }
+    ],
+    3: [
+      { text: "Hello po! gusto ko lang po itanong kung kelan po pwede makita apartment", senderId: 3, time: "05:30 PM" }
+    ],
+    4: [
+      { text: "Hi ate open for lease pa rin po ba yung nakapost na apartment niyo dito??", senderId: 4, time: "05:30 PM" }
+    ],
+    5: [
+      { text: "Is the apartment still available?", senderId: 5, time: "05:30 PM" }
+    ]
   };
 
   const [chatMessages, setChatMessages] = useState(initialChatMessages);
@@ -43,6 +53,8 @@ const MessageSection = ({ user }) => {
 
   const handleChatClick = (id) => {
     setActiveChat(id);
+    setTyping(false);
+    setMessageInput("");
   };
 
   const handleSendMessage = () => {
@@ -59,7 +71,7 @@ const MessageSection = ({ user }) => {
       if (!updatedMessages[activeChat]) {
         updatedMessages[activeChat] = [];
       }
-      updatedMessages[activeChat].push(newMessage);
+      updatedMessages[activeChat] = [...updatedMessages[activeChat], newMessage];
       return updatedMessages;
     });
 
@@ -78,57 +90,77 @@ const MessageSection = ({ user }) => {
 
   return (
     <div className="flex h-full">
-      <div className="w-1/3 border-r border-gray-300 p-4">
-        <input 
-          type="text" 
-          placeholder="Search or start a new chat" 
-          className="w-full p-2 mb-4 border border-gray-300 rounded"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-        {filteredChats.map((chat) => (
-          <div 
-            key={chat.id} 
-            className={`flex items-center p-2 mb-2 cursor-pointer ${activeChat === chat.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
-            onClick={() => handleChatClick(chat.id)}
-          >
-            <img 
-              src={chat.avatar} 
-              alt={chat.name} 
-              className="w-10 h-10 rounded-full mr-2"
-            />
-            <div className="flex-1">
-              <div className="flex justify-between">
-                <span className="font-semibold">{chat.name}</span>
-                <span className="text-sm text-gray-500">{chat.time}</span>
+      <div className="w-2/5 border-r border-gray-300 flex flex-col">
+        <div className="p-4 border-b border-gray-300">
+          <h2 className="text-xl font-semibold mb-2">All Messages</h2>
+          <input 
+            type="text" 
+            placeholder="Search or start a new chat" 
+            className="w-full p-2 border border-gray-300 rounded"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          {filteredChats.map((chat) => (
+            <div 
+              key={chat.id} 
+              className={`flex items-center p-4 cursor-pointer ${activeChat === chat.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+              onClick={() => handleChatClick(chat.id)}
+            >
+              <img 
+                src={chat.avatar} 
+                alt={chat.name} 
+                className="w-12 h-12 rounded-full mr-3"
+              />
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <span className="font-semibold">{chat.name}</span>
+                  <span className="text-sm text-gray-500">{chat.time}</span>
+                </div>
+                <p className="text-sm text-gray-600 truncate">{chat.message}</p>
               </div>
-              <p className="text-sm text-gray-600">{chat.message}</p>
+              <button className="ml-2 text-blue-500">⭐️</button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      <div className="w-2/3 p-4 flex flex-col">
+      <div className="w-4/5 flex flex-col">
         {activeChat ? (
           <>
-            <h2 className="text-2xl font-semibold mb-4">{initialMessages.find(chat => chat.id === activeChat).name}</h2>
-            <div className="flex-1 overflow-auto mb-4" ref={chatContainerRef}>
-              <div className="flex flex-col space-y-4">
-                {chatMessages[activeChat].map((message, index) => (
-                  <div key={index} className={`flex ${message.senderId === currentUser.id ? "justify-end" : "justify-start"}`}>
-                    <div className={`p-2 ${message.senderId === currentUser.id ? "bg-blue-500 text-white" : "bg-gray-200"} rounded-lg`}>
-                      {message.text}
-                      <div className="text-xs text-gray-500 mt-1">{message.time}</div>
-                    </div>
-                  </div>
-                ))}
+            <div className="bg-white p-4 flex items-center justify-between border-b">
+              <div className="flex items-center">
+                <img 
+                  src={initialMessages.find(chat => chat.id === activeChat).avatar} 
+                  alt={initialMessages.find(chat => chat.id === activeChat).name} 
+                  className="w-10 h-10 rounded-full mr-3"
+                />
+                <span className="font-semibold">{initialMessages.find(chat => chat.id === activeChat).name}</span>
+              </div>
+              <div className="flex items-center">
+                <button className="mx-2">⭐️</button>
+                <button className="mx-2">🔍</button>
+                <button className="mx-2">⋮</button>
               </div>
             </div>
-            {typing && <div className="text-sm text-gray-500 mb-2">Typing...</div>}
-            <div className="flex">
+            <div className="flex-1 overflow-auto p-4 bg-gray-100" ref={chatContainerRef}>
+              {chatMessages[activeChat]?.map((message, index) => (
+                <div key={index} className={`flex ${message.senderId === currentUser.id ? "justify-end" : "justify-start"} mb-4`}>
+                  <div className={`p-3 rounded-lg ${message.senderId === currentUser.id ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
+                    {message.text}
+                    <div className="text-xs mt-1 text-gray-500">{message.time}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {typing && <div className="text-sm text-gray-500 px-4 py-2">Typing...</div>}
+            <div className="bg-white p-4 flex items-center">
+              <button className="mr-2">😊</button>
+              <button className="mr-2">📎</button>
               <input 
                 type="text" 
                 placeholder="Type your message here..." 
-                className="flex-1 p-2 border border-gray-300 rounded-l-lg"
+                className="flex-1 p-2 border border-gray-300 rounded-lg mr-2"
                 value={messageInput}
                 onChange={handleInputChange}
                 onKeyPress={(e) => {
@@ -139,15 +171,17 @@ const MessageSection = ({ user }) => {
                 }}
               />
               <button 
-                className="p-2 bg-blue-500 text-white rounded-r-lg"
+                className="p-2 bg-blue-500 text-white rounded-full"
                 onClick={handleSendMessage}
               >
-                Send
+                👍
               </button>
             </div>
           </>
         ) : (
-          <div className="text-gray-500 flex items-center justify-center flex-1">Select a chat to view messages</div>
+          <div className="flex-1 flex items-center justify-center text-gray-500">
+            Select a chat to view messages
+          </div>
         )}
       </div>
     </div>

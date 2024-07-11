@@ -42,7 +42,6 @@ function createTables() {
     phone TEXT,
     password TEXT
   )`);
-
   db.run(`
     CREATE TABLE IF NOT EXISTS housing (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,6 +65,16 @@ function createTables() {
       longitude REAL
     )
   `);
+
+  db.run(`CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    senderId INTEGER,
+    receiverId INTEGER,
+    message TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (senderId) REFERENCES students(id),
+    FOREIGN KEY (receiverId) REFERENCES landlords(id)
+  )`);
 }
 
 
@@ -149,6 +158,71 @@ app.post('/api/register/landlord', (req, res) => {
     });
   });
 });
+
+// Search users endpoint
+app.get('/api/users/search', (req, res) => {
+  const { query } = req.query;
+
+  const searchQuery = `
+    SELECT id, fullName, email
+    FROM students
+    WHERE fullName LIKE '%' || ? || '%' 
+    UNION 
+    SELECT id, fullName, email
+    FROM landlords
+    WHERE fullName LIKE '%' || ? || '%'
+  `;
+
+  db.all(searchQuery, [query, query], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ users: rows });
+  });
+});
+
+
+// Search messages endpoint
+app.get('/api/messages/:chatId/:isLandlord', (req, res) => {
+  const { chatId, isLandlord } = req.params;
+  const senderTable = isLandlord === 'true' ? 'landlords' : 'students';
+  const receiverTable = isLandlord === 'true' ? 'students' : 'landlords';
+
+  const searchQuery = `
+    SELECT messages.*, senders.fullName AS senderName, receivers.fullName AS receiverName
+    FROM messages
+    JOIN ${senderTable} AS senders ON messages.senderId = senders.id
+    JOIN ${receiverTable} AS receivers ON messages.receiverId = receivers.id
+    WHERE (senders.id = ? OR receivers.id = ?)
+    ORDER BY timestamp;
+  `;
+
+  db.all(searchQuery, [chatId, chatId], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ messages: rows });
+  });
+});
+
+
+
+// Send message endpoint
+app.post('/api/messages/send', (req, res) => {
+  const { senderId, receiverId, message, isLandlordSender } = req.body;
+  const senderTable = isLandlordSender ? 'landlords' : 'students';
+  const receiverTable = isLandlordSender ? 'students' : 'landlords';
+
+  // Insert message
+  const insertQuery = `INSERT INTO messages (senderId, receiverId, message) VALUES (?, ?, ?)`;
+  db.run(insertQuery, [senderId, receiverId, message], function(err) {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    res.json({ message: 'Message sent successfully', id: this.lastID });
+  });
+});
+
 
 // Login endpoint
 app.post('/api/login', (req, res) => {
