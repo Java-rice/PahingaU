@@ -205,7 +205,7 @@ const FindDorms = () => {
       <main className="max-w-7xl mx-auto py-8 px-4">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-2">Welcome to PahingaU!</h2>
-          {user && <p className="text-xl">Logged in as: {user.fullName}</p>}
+          {user && <p className="text-xl">Logged in as: {user.email}</p>}
         </div>
 
         <div className="mb-8">
