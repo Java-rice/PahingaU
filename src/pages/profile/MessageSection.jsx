@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const MessageSection = () => {
+const MessageSection = ({ user }) => {
   const [activeChat, setActiveChat] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const [searchInput, setSearchInput] = useState("");
