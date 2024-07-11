@@ -1,9 +1,18 @@
-// src/components/cards/ListingBesideMapCards.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ListingBesideMapCards = ({ image, title, details, price, rating, reviews }) => {
+const ListingBesideMapCards = ({ id, image, title, details, price, rating, reviews }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/ViewDorm`);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden mb-4">
+    <div
+      className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden mb-4 cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="md:w-1/3">
         <img src={image} alt={title} className="w-full h-48 md:h-full object-cover" />
       </div>
