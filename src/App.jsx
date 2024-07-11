@@ -21,6 +21,7 @@ import Profile from "./pages/profile/Profile";
 import ViewDorm from "./pages/viewdorm/ViewDorm";
 import FindDorms from "./pages/finddorms/FindDorms";
 import PostProperty from "./pages/postproperty/PostProperty"
+
 import "./App.css";
 
 const App = () => {
