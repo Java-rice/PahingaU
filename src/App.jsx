@@ -44,7 +44,7 @@ const App = () => {
           <Route path="/SafetyGuidelines" element={<SafetyGuidelines />} />
           <Route path="/PostProperty" element={<PostProperty />} />
           <Route path="/Success" element={<SuccessPage />} />
-          <Route path="/Profile" element={<Profile />} />
+          <Route path="/Profile/*" element={<Profile />} />
           <Route path="/FindDorms" element={<FindDorms />} />
           <Route path="/ViewDorm" element={<ViewDorm />} />
         </Routes>
