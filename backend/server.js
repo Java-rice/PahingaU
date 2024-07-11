@@ -182,10 +182,7 @@ app.post('/api/register/student', (req, res) => {
 
     const query = `INSERT INTO students (fullName, email, university, socialStatus, phone, password, latitude, longitude, profilePicture) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const query = `INSERT INTO students (fullName, email, university, socialStatus, phone, password, latitude, longitude, profilePicture) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    db.run(query, [fullName, email, university, socialStatus, phone, hashedPassword, latitude, longitude, profilePicture], function (err) {
     db.run(query, [fullName, email, university, socialStatus, phone, hashedPassword, latitude, longitude, profilePicture], function (err) {
       if (err) {
         return res.status(400).json({ error: err.message });
@@ -207,10 +204,7 @@ app.post('/api/register/landlord', (req, res) => {
 
     const query = `INSERT INTO landlords (fullName, email, phone, password, profilePicture) 
                      VALUES (?, ?, ?, ?, ?)`;
-    const query = `INSERT INTO landlords (fullName, email, phone, password, profilePicture) 
-                     VALUES (?, ?, ?, ?, ?)`;
 
-    db.run(query, [fullName, email, phone, hashedPassword, profilePicture], function (err) {
     db.run(query, [fullName, email, phone, hashedPassword, profilePicture], function (err) {
       if (err) {
         if (err.message.includes("UNIQUE constraint failed: landlords.email")) {
