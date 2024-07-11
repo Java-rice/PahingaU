@@ -18,6 +18,7 @@ import SuccessPage from "./pages/register/SuccessPage";
 import TransitionWrapper from "./components/transition/TransitionWrapper";
 import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
 import Profile from "./pages/profile/Profile";
+import ViewDorm from "./pages/viewdorm/ViewDorm";
 import FindDorms from "./pages/finddorms/FindDorms";
 import PostProperty from "./pages/postproperty/PostProperty"
 import "./App.css";
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/Success" element={<SuccessPage />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/FindDorms" element={<FindDorms />} />
+          <Route path="/ViewDorm" element={<ViewDorm />} />
         </Routes>
       </TransitionWrapper>
       <Footer />

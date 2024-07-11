@@ -162,14 +162,6 @@ const Header = () => {
                       <AccountCircleIcon className="ml-1" />
                     </NavLink>
                   </li>
-                  <li className="text-base font-bold font-sans cursor-pointer">
-                    <button
-                      onClick={handleLogout}
-                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                    >
-                      Logout
-                    </button>
-                  </li>
                 </>
               ) : (
                 <>
@@ -256,14 +248,6 @@ const Header = () => {
                         Profile
                         <AccountCircleIcon className="ml-1" />
                       </NavLink>
-                    </li>
-                    <li className="text-base font-bold font-sans cursor-pointer">
-                      <button
-                        onClick={handleLogout}
-                        className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                      >
-                        Logout
-                      </button>
                     </li>
                   </>
                 ) : (
