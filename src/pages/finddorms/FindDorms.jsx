@@ -3,37 +3,17 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import { Button } from "../../components/buttons/Button";
 import ListingBesideMapCards from "../../components/cards/ListingBesideMapCards";
-import backgroundImage from "../../assets/FindBg.png";
-import mapLogo from "../../assets/mapLogo.png";
-import FilterHome from "../../components/filterhome/FilterHome"; // Import the new FilterHome component
-import covenantGarden from "../../assets/covenantGarden.png";
-import elpueblo from "../../assets/elpueblocondo.png";
+import housingMap from "../../assets/Housing-Map.png";
+import universityMap from "../../assets/University-Map.png";
 
 const FindDorms = () => {
   const [map, setMap] = useState(null);
   const [fromInput, setFromInput] = useState("");
-  const [distance, setDistance] = useState(null);
   const [user, setUser] = useState(null);
-  const [showPriceDropdown, setShowPriceDropdown] = useState(false);
-  const [showPlaceDropdown, setShowPlaceDropdown] = useState(false);
-  const [selectedPrice, setSelectedPrice] = useState("Price");
-  const [selectedPlace, setSelectedPlace] = useState("Type of place");
   const [marker, setMarker] = useState(null);
-
-  const universityCoordinates = {
-    "Adamson University": [120.986, 14.6042],
-    "Ateneo de Manila University": [121.0777, 14.6407],
-    "De La Salle University": [120.9932, 14.5648],
-    "De La Salle-College of Saint Benilde": [120.9951, 14.5636],
-    "National University, Philippines": [120.9946, 14.6043],
-    "Polytechnic University of the Philippines": [121.0108, 14.5979],
-    "University of Santo Tomas": [120.9896, 14.6093],
-    "University of the Philippines Diliman": [121.0657, 14.6537],
-    "University of the Philippines Manila": [120.9918, 14.5806],
-    "University of the Philippines System": [121.0657, 14.6537],
-  };
+  const [initialCenter, setInitialCenter] = useState([121.0108, 14.5979]); // Default center
+  const [universities, setUniversities] = useState({});
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -46,12 +26,35 @@ const FindDorms = () => {
       setFromInput(parsedUser.university);
     }
 
-    const initializeMap = () => {
-      const initialCenter =
-        storedUser && universityCoordinates[JSON.parse(storedUser).university]
-          ? universityCoordinates[JSON.parse(storedUser).university]
-          : [121.774, 12.8797];
+    // Fetch universities data
+    fetch("http://localhost:3001/api/universities")
+      .then((response) => response.json())
+      .then((data) => {
+        const fetchedUniversities = {};
+        data.forEach((university) => {
+          fetchedUniversities[university.name] = [
+            university.longitude,
+            university.latitude,
+          ];
+        });
+        setUniversities(fetchedUniversities);
+      })
+      .catch((error) => console.error("Error fetching universities:", error));
+  }, []);
 
+  useEffect(() => {
+    if (map && fromInput && universities[fromInput]) {
+      const newCenter = universities[fromInput];
+      map.setMaxBounds(null);
+      map.setZoom(13);
+      marker.setLngLat(newCenter);
+      map.setCenter(newCenter);
+      map.setMaxBounds(map.getBounds());
+    }
+  }, [fromInput, map, universities, marker]);
+
+  useEffect(() => {
+    const initializeMap = () => {
       const mapInstance = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
@@ -70,11 +73,44 @@ const FindDorms = () => {
 
       setMap(mapInstance);
 
-      // Create a marker and set its initial position
-      const initialMarker = new mapboxgl.Marker()
+      const initialMarkerElement = document.createElement("div");
+      initialMarkerElement.style.width = "40px";
+      initialMarkerElement.style.height = "40px";
+      initialMarkerElement.style.backgroundImage = `url(${universityMap})`;
+      initialMarkerElement.style.backgroundSize = "cover";
+      initialMarkerElement.style.cursor = "pointer";
+
+      const initialMarker = new mapboxgl.Marker(initialMarkerElement)
         .setLngLat(initialCenter)
         .addTo(mapInstance);
       setMarker(initialMarker);
+
+      fetch("http://localhost:3001/api/housing")
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((house) => {
+            const markerElement = document.createElement("div");
+            markerElement.style.width = "35px";
+            markerElement.style.height = "35px";
+            markerElement.style.backgroundImage = `url(${housingMap})`;
+            markerElement.style.backgroundSize = "cover";
+            markerElement.style.cursor = "pointer";
+
+            const marker = new mapboxgl.Marker(markerElement)
+              .setLngLat([house.longitude, house.latitude])
+              .addTo(mapInstance);
+
+            marker.getElement().addEventListener("click", () => {
+              const currentCenter = mapInstance.getCenter();
+              fetchRoute(
+                mapInstance,
+                [currentCenter.lng, currentCenter.lat],
+                [house.longitude, house.latitude]
+              );
+            });
+          });
+        })
+        .catch((error) => console.error("Error fetching housing data:", error));
     };
 
     if (!map) {
@@ -82,123 +118,61 @@ const FindDorms = () => {
     }
 
     return () => map && map.remove();
-  }, [map]);
+  }, [initialCenter, map]);
 
-  useEffect(() => {
-    if (map && fromInput && universityCoordinates[fromInput]) {
-      map.setMaxBounds(null);
-      map.setZoom(12);
-      marker.setLngLat(universityCoordinates[fromInput]);
-      map.setCenter(universityCoordinates[fromInput]);
-      map.setMaxBounds(map.getBounds());
-    }
-  }, [fromInput, map]);
+  const fetchRoute = async (mapInstance, fromCoordinates, toCoordinates) => {
+    try {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromCoordinates[0]},${fromCoordinates[1]};${toCoordinates[0]},${toCoordinates[1]}?geometries=geojson&steps=true&overview=full&access_token=${mapboxgl.accessToken}`;
 
-  const handleSetWaypointFromInput = async () => {
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-    });
-  };
+      const response = await fetch(url);
+      const data = await response.json();
 
-  const fetchRoute = async () => {
-    const coordinates = universityCoordinates[fromInput];
-    if (!coordinates) {
-      alert("Please select a valid university.");
-      return;
-    }
+      if (!data.routes || data.routes.length === 0) {
+        throw new Error("No routes found");
+      }
 
-    const route = {
-      type: "LineString",
-      coordinates: [
-        [coordinates[0], coordinates[1]],
-        [coordinates[0] + 0.01, coordinates[1] + 0.01],
-      ],
-    };
+      // Extract the route geometry and distance from the response
+      const route = data.routes[0].geometry;
+      const distance = data.routes[0].distance; // distance in meters
 
-    setDistance(1.5);
+      // Remove existing route layer if it exists
+      if (mapInstance.getLayer("route")) {
+        mapInstance.removeLayer("route");
+      }
 
-    if (map.getSource("route")) {
-      map.getSource("route").setData({
-        type: "Feature",
-        geometry: route,
+      // Remove existing route source if it exists
+      if (mapInstance.getSource("route")) {
+        mapInstance.removeSource("route");
+      }
+
+      // Add the route source and layer to the map
+      mapInstance.addSource("route", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: route,
+        },
       });
-    } else {
-      map.addLayer({
+
+      mapInstance.addLayer({
         id: "route",
         type: "line",
-        source: {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: route,
-          },
-        },
+        source: "route",
         paint: {
           "line-color": "#3887be",
           "line-width": 5,
         },
       });
+
+      // Display the distance in a popup on the map
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setLngLat(toCoordinates)
+        .setHTML(`<p>Distance: ${(distance / 1000).toFixed(2)} km</p>`)
+        .addTo(mapInstance);
+    } catch (error) {
+      console.error("Error fetching the route:", error);
     }
   };
-
-  const clearRoute = () => {
-    setDistance(null);
-    if (map.getLayer("route")) {
-      map.removeLayer("route");
-      map.removeSource("route");
-    }
-  };
-
-  const dummyListings = [
-    {
-      id: 1,
-      image: covenantGarden,
-      title: "Covent Garden Sta. Mesa Condo for Rent near PUP & UERM",
-      details:
-        "4-6 guests · Entire Condo · 6 beds · Shared bath · Wifi · Kitchen · Free Parking",
-      price: "Php 5,680 /month",
-      rating: 5.0,
-      reviews: 318,
-    },
-    {
-      id: 2,
-      image: elpueblo,
-      title: "El Pueblo Condo For Rent",
-      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
-      price: "Php 6,755 /month",
-      rating: 5.0,
-      reviews: 318,
-    },
-    {
-      id: 3,
-      image: elpueblo,
-      title: "El Pueblo Condo For Rent",
-      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
-      price: "Php 6,755 /month",
-      rating: 5.0,
-      reviews: 318,
-    },
-    {
-      id: 4,
-      image: elpueblo,
-      title: "El Pueblo Condo For Rent",
-      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
-      price: "Php 6,755 /month",
-      rating: 5.0,
-      reviews: 318,
-    },
-    {
-      id: 5,
-      image: elpueblo,
-      title: "El Pueblo Condo For Rent",
-      details: "4-6 persons · Entire Room · 4 beds · 1 bath · Wifi · Kitchen",
-      price: "Php 6,755 /month",
-      rating: 5.0,
-      reviews: 318,
-    },
-    // Add more dummy listings as needed
-  ];
 
   return (
     <div className="w-full font-poppins pt-[10%] bg-blue-50 min-h-screen">
@@ -219,40 +193,15 @@ const FindDorms = () => {
                 <option value="" disabled>
                   Select University
                 </option>
-                {Object.keys(universityCoordinates).map((option) => (
+                {Object.keys(universities).map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
               </select>
             )}
-            <button
-              className="mx-2 text-[#1A1A1A] hover:bg-gray-100 p-3 rounded-full"
-              onClick={handleSetWaypointFromInput}
-            >
-              <img src={mapLogo} className="w-6 h-6" alt="Map Logo" />
-            </button>
-            <Button
-              variant="solidm"
-              onClick={fetchRoute}
-              className="rounded-r-full"
-            >
-              Search
-            </Button>
           </div>
         </div>
-
-        {/* Use the FilterHome component */}
-        <FilterHome
-          selectedPrice={selectedPrice}
-          setSelectedPrice={setSelectedPrice}
-          showPriceDropdown={showPriceDropdown}
-          setShowPriceDropdown={setShowPriceDropdown}
-          selectedPlace={selectedPlace}
-          setSelectedPlace={setSelectedPlace}
-          showPlaceDropdown={showPlaceDropdown}
-          setShowPlaceDropdown={setShowPlaceDropdown}
-        />
 
         <div className="mb-16 flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
@@ -265,22 +214,9 @@ const FindDorms = () => {
             className="lg:w-1/2 overflow-y-auto"
             style={{ maxHeight: "600px" }}
           >
-            {dummyListings.map((listing) => (
-              <ListingBesideMapCards key={listing.id} {...listing} />
-            ))}
+            <ListingBesideMapCards />
           </div>
         </div>
-
-        {distance !== null && (
-          <div className="mt-4 p-4 bg-white text-black rounded-lg shadow-lg">
-            <p>
-              <strong>Distance:</strong> {distance.toFixed(2)} km
-            </p>
-            <Button variant="solidm" onClick={clearRoute} className="mt-2">
-              Clear Route
-            </Button>
-          </div>
-        )}
       </main>
     </div>
   );
