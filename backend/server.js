@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const port = 3001;
@@ -49,6 +52,8 @@ function createTables() {
     phone TEXT,
     password TEXT,
     profilePicture TEXT
+    password TEXT,
+    profilePicture TEXT
   )`, (err) => {
     if (err) {
       console.error('Error creating students table:', err.message);
@@ -60,6 +65,8 @@ function createTables() {
     fullName TEXT,
     email TEXT UNIQUE,
     phone TEXT,
+    password TEXT,
+    profilePicture TEXT
     password TEXT,
     profilePicture TEXT
   )`);
@@ -97,6 +104,21 @@ function createTables() {
     FOREIGN KEY (receiverId) REFERENCES landlords(id)
   )`);
 }
+
+app.post('/api/upload-profile-picture', upload.single('profilePicture'), (req, res) => {
+  const userId = req.body.userId;
+  const table = req.body.isLandlord ? 'landlords' : 'students'; // Correct table name determination
+
+  const profilePicture = req.file.path;
+
+  db.run(`UPDATE ${table} SET profilePicture = ? WHERE id = ?`, [profilePicture, userId], function(err) {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: 'Profile picture updated successfully', profilePicture });
+  });
+});
+
 
 app.post('/api/upload-profile-picture', upload.single('profilePicture'), (req, res) => {
   const userId = req.body.userId;
@@ -160,7 +182,10 @@ app.post('/api/register/student', (req, res) => {
 
     const query = `INSERT INTO students (fullName, email, university, socialStatus, phone, password, latitude, longitude, profilePicture) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO students (fullName, email, university, socialStatus, phone, password, latitude, longitude, profilePicture) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
+    db.run(query, [fullName, email, university, socialStatus, phone, hashedPassword, latitude, longitude, profilePicture], function (err) {
     db.run(query, [fullName, email, university, socialStatus, phone, hashedPassword, latitude, longitude, profilePicture], function (err) {
       if (err) {
         return res.status(400).json({ error: err.message });
@@ -182,7 +207,10 @@ app.post('/api/register/landlord', (req, res) => {
 
     const query = `INSERT INTO landlords (fullName, email, phone, password, profilePicture) 
                      VALUES (?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO landlords (fullName, email, phone, password, profilePicture) 
+                     VALUES (?, ?, ?, ?, ?)`;
 
+    db.run(query, [fullName, email, phone, hashedPassword, profilePicture], function (err) {
     db.run(query, [fullName, email, phone, hashedPassword, profilePicture], function (err) {
       if (err) {
         if (err.message.includes("UNIQUE constraint failed: landlords.email")) {
