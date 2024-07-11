@@ -30,7 +30,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-white font-montserrat">
+    <div className="min-h-screen p-4 bg-white font-montserrat m-24 justify-center">
       <div className="flex flex-col md:flex-row h-full w-full">
         <div className="w-full max-w-[120px] md:max-w-[180px] bg-white rounded-lg shadow-right p-5 mb-4 md:mb-0 md:mr-4 ml-10">
           <ul className="list-none p-0 m-0">
