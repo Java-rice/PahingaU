@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// Example usage in React component
+import { useNavigate } from "react-router-dom";
 
 const ListingBesideMapCards = () => {
   const [listings, setListings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -16,12 +17,17 @@ const ListingBesideMapCards = () => {
       });
   }, []);
 
+  const handleCardClick = (id) => {
+    navigate(`/ViewDorm/${id}`);
+  };
+
   return (
     <>
-      {listings.map((listing, index) => (
+      {listings.map((listing) => (
         <div
-          key={index}
-          className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden mb-4"
+          key={listing.id}
+          className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden mb-4 cursor-pointer"
+          onClick={() => handleCardClick(listing.id)}
         >
           <div className="md:w-1/3">
             <img
