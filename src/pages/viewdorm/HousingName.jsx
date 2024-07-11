@@ -1,7 +1,5 @@
 import React from 'react';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
-import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 
 const HousingName = () => {
     return (

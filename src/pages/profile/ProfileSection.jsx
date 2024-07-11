@@ -2,7 +2,6 @@ import React from "react";
 
 const ProfileSection = ({ user }) => (
   <div>
-    <h1>Profile Section</h1>
     <div className="profile-details">
       <img
         className="profile-picture"

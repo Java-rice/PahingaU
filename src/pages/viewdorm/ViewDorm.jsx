@@ -1,3 +1,4 @@
+// ViewDorm.jsx
 import React from "react";
 import SearchDorm from "../../components/search/SearchDorm";
 import ImageCollage from '../../components/cards/ImageCollage';
@@ -16,8 +17,8 @@ const ViewDorm = () => {
 
     return (
         <>
-        <div className="w-full h-full bg-white">
-            <div className="pt-32 pb-14">
+        <div className="w-full h-full bg-white mt-24">
+            <div className="p-9">
                 <SearchDorm />
             </div>
             <HousingName />
