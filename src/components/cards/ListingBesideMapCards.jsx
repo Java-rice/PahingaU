@@ -18,7 +18,7 @@ const ListingBesideMapCards = () => {
   }, []);
 
   const handleCardClick = (id) => {
-    navigate(`/ViewDorm`);
+    navigate('/ViewDorm');
   };
 
   return (

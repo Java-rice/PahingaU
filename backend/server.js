@@ -9,8 +9,6 @@ const fs = require('fs');
 const app = express();
 const port = 3001;
 
-const upload = multer({ storage });
-
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
@@ -28,7 +26,7 @@ const storage = multer.diskStorage({
   }
 });
 
-
+const upload = multer({ storage });
 
 // Connect to SQLite database
 const db = new sqlite3.Database('./database.sqlite', (err) => {
