@@ -101,16 +101,39 @@ const Header = () => {
         ) : (
           <div className="hidden lg:flex flex-grow items-center justify-end">
             <ul className="flex items-center space-x-8 text-gray-800">
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <NavLink
-                  exact
-                  to="/"
-                  activeClassName="text-[#0077B5]"
-                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                >
-                  Home
-                </NavLink>
-              </li>
+              {!isLandlord && (
+                <>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <NavLink
+                      exact
+                      to="/"
+                      activeClassName="text-[#0077B5]"
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Home
+                    </NavLink>
+                  </li>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <NavLink
+                      to={isLoggedIn ? "/FindDorms" : "/Login"}
+                      activeClassName="text-[#0077B5]"
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                      onClick={handleFindDormsClick} // Handle FindDorms click
+                    >
+                      Find Dorms
+                    </NavLink>
+                  </li>
+                  <li className="text-base font-bold font-sans cursor-pointer">
+                    <NavLink
+                      to="/PostProperty"
+                      activeClassName="text-[#0077B5]"
+                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                    >
+                      Post My Property
+                    </NavLink>
+                  </li>
+                </>
+              )}
               <li className="text-base font-bold font-sans cursor-pointer">
                 <NavLink
                   to="/About"
@@ -120,27 +143,6 @@ const Header = () => {
                   About
                 </NavLink>
               </li>
-              <li className="text-base font-bold font-sans cursor-pointer">
-                <NavLink
-                  to={isLoggedIn ? "/FindDorms" : "/Login"}
-                  activeClassName="text-[#0077B5]"
-                  className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  onClick={handleFindDormsClick} // Handle FindDorms click
-                >
-                  Find Dorms
-                </NavLink>
-              </li>
-              {isLandlord && (
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    to="/PostProperty"
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  >
-                    Post My Property
-                  </NavLink>
-                </li>
-              )}
               <li className="text-base font-bold font-sans cursor-pointer">
                 <NavLink
                   to="/HowItWorks"
@@ -188,16 +190,39 @@ const Header = () => {
           <div className="fixed flex pb-10 px-10 w-1/2 top-20 right-0 items-center justify-center bg-white shadow-lg transition duration-300 ease-in-out z-20">
             <div className="relative w-[80%]">
               <ul className="flex flex-col mt-4 space-y-4 text-gray-800">
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    exact
-                    to="/"
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                  >
-                    Home
-                  </NavLink>
-                </li>
+                {!isLandlord && (
+                  <>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <NavLink
+                        exact
+                        to="/"
+                        activeClassName="text-[#0077B5]"
+                        className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                      >
+                        Home
+                      </NavLink>
+                    </li>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <NavLink
+                        to={isLoggedIn ? "/FindDorms" : "/Login"}
+                        activeClassName="text-[#0077B5]"
+                        className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                        onClick={handleFindDormsClick} // Handle FindDorms click
+                      >
+                        Find Dorms
+                      </NavLink>
+                    </li>
+                    <li className="text-base font-bold font-sans cursor-pointer">
+                      <NavLink
+                        to="/PostProperty"
+                        activeClassName="text-[#0077B5]"
+                        className="hover:text-[#0077B5] transition duration-300 ease-in-out"
+                      >
+                        Post My Property
+                      </NavLink>
+                    </li>
+                  </>
+                )}
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
                     to="/About"
@@ -207,27 +232,6 @@ const Header = () => {
                     About
                   </NavLink>
                 </li>
-                <li className="text-base font-bold font-sans cursor-pointer">
-                  <NavLink
-                    to={isLoggedIn ? "/FindDorms" : "/Login"}
-                    activeClassName="text-[#0077B5]"
-                    className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                    onClick={handleFindDormsClick} // Handle FindDorms click
-                  >
-                    Find Dorms
-                  </NavLink>
-                </li>
-                {isLandlord && (
-                  <li className="text-base font-bold font-sans cursor-pointer">
-                    <NavLink
-                      to="/PostProperty"
-                      activeClassName="text-[#0077B5]"
-                      className="hover:text-[#0077B5] transition duration-300 ease-in-out"
-                    >
-                      Post My Property
-                    </NavLink>
-                  </li>
-                )}
                 <li className="text-base font-bold font-sans cursor-pointer">
                   <NavLink
                     to="/HowItWorks"
