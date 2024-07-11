@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-
 import backgroundImage from "../../assets/backgroundRegister.png";
 
 const Register = () => {
@@ -96,8 +95,8 @@ const Register = () => {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2 bg-white p-10">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="md:w-1/2 bg-white p-10 min-h-screen m-28">
         <h1 className="text-3xl font-bold text-gray-800">
           Input your information
         </h1>
