@@ -183,7 +183,7 @@ const FindDorms = () => {
         </div>
 
         <div className="mb-8">
-          <div className="max-w-3xl mx-auto flex items-center bg-white rounded-full shadow-md">
+          <div className="max-w-3xl mx-auto pr-[24px] flex items-center bg-white rounded-full shadow-md">
             {user && (
               <select
                 className="flex-grow px-6 py-3 text-xl text-[#1A1A1A] rounded-l-full focus:outline-none"
