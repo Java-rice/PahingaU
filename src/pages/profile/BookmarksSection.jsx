@@ -4,6 +4,10 @@ import covenantGarden from "../../assets/covenantGarden.png";
 import elpueblo from "../../assets/elpueblocondo.png";
 
 const BookmarksSection = () => {
+  // Debugging to check if images are imported correctly
+  console.log("covenantGarden image path:", covenantGarden);
+  console.log("elpueblo image path:", elpueblo);
+
   const dummyListings = [
     {
       id: 1,
@@ -25,7 +29,8 @@ const BookmarksSection = () => {
       reviews: 318,
     }
   ];
-    return (
+
+  return (
     <div className="h-auto w-auto m-10">
       <div>
         {dummyListings.map((listing) => (
@@ -42,7 +47,7 @@ const BookmarksSection = () => {
         ))}
       </div>
     </div>
-      );
+  );
 };
 
 export default BookmarksSection;
