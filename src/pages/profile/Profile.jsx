@@ -21,6 +21,7 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
+    setUser(null); // Clear the user state
     navigate("/");
     window.location.reload();
   };

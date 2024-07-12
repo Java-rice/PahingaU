@@ -20,7 +20,11 @@ import ScrollToTop from "./components/scrollbehavior/ScrollToTop";
 import Profile from "./pages/profile/Profile";
 import ViewDorm from "./pages/viewdorm/ViewDorm";
 import FindDorms from "./pages/finddorms/FindDorms";
-import PostProperty from "./pages/postproperty/PostProperty"
+import ManageListings from "./pages/managelistings/ManageListings";
+import MessageSection from "./pages/profile/MessageSection";
+import PostProperty from "./pages/postproperty/PostProperty";
+import LandlordHome from "./pages/landlordhome/LandlordHome";
+
 import "./App.css";
 
 const App = () => {
@@ -44,8 +48,11 @@ const App = () => {
           <Route path="/PostProperty" element={<PostProperty />} />
           <Route path="/Success" element={<SuccessPage />} />
           <Route path="/Profile/*" element={<Profile />} />
+          <Route path="/ManageListings" element={<ManageListings />} />
+          <Route path="/MessageSection" element={<MessageSection />} />
           <Route path="/FindDorms" element={<FindDorms />} />
           <Route path="/ViewDorm" element={<ViewDorm />} />
+          <Route path="/LandlordHome" element={<LandlordHome />} />
         </Routes>
       </TransitionWrapper>
       <Footer />
