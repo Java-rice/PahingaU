@@ -1,4 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
+import jm from "../../assets/jm.jpg"
+import kurt from "../../assets/kurt.jpg"
+import jp from "../../assets/jp.jpg"
+import adrian from "../../assets/adrian.jpg"
+import nichole from "../../assets/nichole.jpg"
 
 const MessageSection = ({ user }) => {
   const [activeChat, setActiveChat] = useState(null);
@@ -13,11 +18,11 @@ const MessageSection = ({ user }) => {
   };
 
   const initialMessages = [
-    { id: 1, name: "Nichole Alpapara", message: "Pwede niyo po ma-visit yung room set lang po kayo ng schedule sa amin", time: "Today | 04:45 PM", avatar: "https://placehold.co/50x50" },
-    { id: 2, name: "John Mark", message: "Is the apartment still available?", time: "Today | 05:30 PM", avatar: "https://placehold.co/50x50" },
-    { id: 3, name: "Adrian Rafael", message: "Hello po! gusto ko lang po itanong kung kelan po pwede makita apartment", time: "Today | 05:30 PM", avatar: "https://placehold.co/50x50" },
-    { id: 4, name: "Kurt Denver", message: "Hi ate open for lease pa rin po ba yung nakapost na apartment niyo dito??", time: "Today | 05:30 PM", avatar: "https://placehold.co/50x50" },
-    { id: 5, name: "John Patrick", message: "Is the apartment still available?", time: "Today | 05:30 PM", avatar: "https://placehold.co/50x50" },
+    { id: 1, name: "Nichole Alpapara", message: "Pwede niyo po ma-visit yung room set lang po kayo ng schedule sa amin", time: "Today | 04:45 PM", avatar: nichole },
+    { id: 2, name: "John Mark", message: "Is the apartment still available?", time: "Today | 05:30 PM", avatar: jm },
+    { id: 3, name: "Adrian Rafael", message: "Hello po! gusto ko lang po itanong kung kelan po pwede makita apartment", time: "Today | 05:30 PM", avatar: adrian },
+    { id: 4, name: "Kurt Denver", message: "Hi ate open for lease pa rin po ba yung nakapost na apartment niyo dito??", time: "Today | 05:30 PM", avatar: kurt },
+    { id: 5, name: "John Patrick", message: "Is the apartment still available?", time: "Today | 05:30 PM", avatar: jp },
   ];
 
   const initialChatMessages = {

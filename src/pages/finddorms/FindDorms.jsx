@@ -167,7 +167,7 @@ const FindDorms = () => {
       // Display the distance in a popup on the map
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setLngLat(toCoordinates)
-        .setHTML(<p>Distance: ${(distance / 1000).toFixed(2)} km</p>)
+        .setHTML(`<p>Distance: ${(distance / 1000).toFixed(2)} km</p>`)
         .addTo(mapInstance);
     } catch (error) {
       console.error("Error fetching the route:", error);
